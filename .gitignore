@@ -1,0 +1,5 @@
+#Ignorar carpeta target
+target/
+.project
+.settings/
+.tern-project

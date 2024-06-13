@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<style type="text/css">
+		.Cell {
+			display: table-cell;
+			border-width: thin;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+	</style>
+	<title>Polla futbolera</title>
+	<link rel="shortcut icon"
+		href="#{facesContext.externalContext.requestContextPath}/imagenes/soccer.ico"
+		type="image/x-icon" />
+	<link rel="icon"
+		href="#{facesContext.externalContext.requestContextPath}/imagenes/soccer.ico"
+		type="image/x-icon" />
+</h:head>
+<h:body>
+	<h:form>
+		<b:panel>
+			<b:row class="row limit">
+				<b:column class="col-sm-6">
+					<div class="Cell" style="vertical-align: middle; width: 25%; height:25%;">
+						<h:graphicImage
+							value="/imagenes/logoEvento.png" style="height:35%;width:35%;" />
+					</div>
+					<div class="Cell text-middle" style="text-align: center; vertical-align: middle;">
+						<h:outputText value="RESULTADOS OFICIALES"
+							tyle="text-align:center;color: red;font-size:xx-large;font-weight:bold;" />
+					</div>
+				</b:column>
+				<!--<b:column col-xs="6" col-md="4">
+					<p:commandLink id="lnkMail"
+						actionListener="#{pollaBean.eviarMail}" immediate="true">
+						<h:graphicImage value="/imagenes/Gmail_Logo.png"
+							style="width: 40px; height: 30px;" />
+					</p:commandLink>
+				</b:column>-->
+			</b:row>
+		</b:panel>
+		<b:panel>
+			<b:row>
+				<b:column>
+					<p:dataTable id="dtbPolla"
+						value="#{resultadoOficialBean.objPartido}" 
+						var="partido"
+						editable="true">
+						<p:ajax event="rowEdit"
+							listener="#{resultadoOficialBean.resultado}" 
+							immediate="true"
+							update="@this" />
+						<p:ajax event="rowEditCancel" />
+						<p:column style="display: none">
+							<h:outputText value="#{partido.id}" />
+						</p:column>
+						<p:column style="font-size: xx-small">
+							<h:outputText value="#{partido.fechaJuego}" />
+						</p:column>
+						<p:column style="font-size: x-small">
+							<h:outputText value="#{partido.pais1}" />
+						</p:column>
+						<p:column>
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{partido.marcador1}" style="font-size: x-small">
+										<f:convertNumber type="number" 
+											maxFractionDigits="0"
+											minFractionDigits="0" />
+									</h:outputText>
+								</f:facet>
+								<f:facet name="input">
+									<h:inputText value="#{partido.marcador1}" size="3">
+										<f:convertNumber type="number" 
+											maxFractionDigits="0"
+											minFractionDigits="0" />
+									</h:inputText>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="font-size: x-small">
+							<h:outputText value="#{partido.pais2}" />
+						</p:column>
+						<p:column>
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{partido.marcador2}"  style="font-size: x-small">
+										<f:convertNumber type="number" 
+											maxFractionDigits="0"
+											minFractionDigits="0" />
+									</h:outputText>
+								</f:facet>
+								<f:facet name="input">
+									<h:inputText value="#{partido.marcador2}" size="3">
+										<f:convertNumber type="number" 
+											maxFractionDigits="0"
+											minFractionDigits="0" />
+									</h:inputText>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column>
+							<p:rowEditor />
+						</p:column>
+					</p:dataTable>
+				</b:column>
+			</b:row>
+		</b:panel>
+	</h:form>
+</h:body>
+</html>

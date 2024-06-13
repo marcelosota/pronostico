@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<style type="text/css">
+.tablewrapper {
+	position: relative;
+}
+
+.Table {
+	display: table;
+}
+
+.Title {
+	display: table-caption;
+	text-align: center;
+	font-weight: bold;
+	font-size: larger;
+}
+
+.Heading {
+	display: table-row;
+	font-weight: bold;
+	text-align: center;
+}
+
+.Row {
+	display: table-row;
+}
+
+.Cell {
+	display: table-cell;
+	border-width: thin;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.Cell.rowspanned {
+	position: relative;
+	top: 0;
+	bottom: 0;
+	width: 100px;
+}
+
+.Cell.empty {
+	border: none;
+	width: 100px;
+}
+</style>
+	<title>Pronósticos Futboleros</title>
+	<link rel="shortcut icon"
+		href="#{facesContext.externalContext.requestContextPath}/imagenes/soccer.ico"
+		type="image/x-icon" />
+	<link rel="icon"
+		href="#{facesContext.externalContext.requestContextPath}/imagenes/soccer.ico"
+		type="image/x-icon" />
+</h:head>
+<body>
+	<h:form id="marcador">
+		<p:growl id="mensajeAlerta" showDetail="true" sticky="true"/>
+		<p:remoteCommand name ="onRowEdit" action="#{pollaBean.cargarDatos}" 
+			update=":marcador:dtbPolla :marcador:dtbPosiciones :marcador:dtbResultado"/>
+		<b:container fluid="true">
+		<div style="width: 100%">
+			<div class="Row">
+				<div class="Cell">&nbsp;</div>
+				<div class="Cell">&nbsp;</div>
+				<div class="Cell">
+					<p:commandLink id="lnkActualizar" actionListener="#{pollaBean.cargarDatos}" immediate="true" 
+						update=":marcador:dtbPolla :marcador:dtbPosiciones :marcador:dtbResultado">
+						<h:graphicImage value="/imagenes/refresh_blue.png" style="width: 30px; height: 30px;" />
+					</p:commandLink>&nbsp;&nbsp;&nbsp;
+					<p:commandLink id="lnkContrasena" onclick="PF('dlgContrasena').show()">
+						<h:graphicImage value="/imagenes/password_orange.png" style="width: 30px; height: 30px;" />
+					</p:commandLink>&nbsp;&nbsp;&nbsp;
+					<p:commandLink id="lnkSalir" actionListener="#{pollaBean.salir}" immediate="true"> 
+						<h:graphicImage value="/imagenes/exit_red.png" style="width: 30px; height: 30px;" />
+					</p:commandLink>
+					<p:tooltip for="lnkActualizar" value="Actualizar tabla posiciones" showEffect="clip" hideEffect="explode" />
+					<p:tooltip for="lnkContrasena" value="Cambiar contraseña" showEffect="clip" hideEffect="explode" />
+					<p:tooltip for="lnkSalir" value="Salir" showEffect="clip" hideEffect="explode" />
+				</div>
+			</div>
+			<div class="Row">
+				<div class="Cell" style="width: 25%">
+					<h:graphicImage value="/imagenes/logoEvento.png"
+						style="height:40%;width:40%;" />
+				</div>
+				<div class="Cell" style="vertical-align: middle;">
+					<h:outputText value="PRONÓSTICO FUTBOLERO"
+						style="text-align:center;color: red;font-size:xx-large;font-weight:bold;" />
+				</div>
+				<div class="Cell" style="width: 25%; vertical-align: middle">
+					<p:button
+						onclick="window.open('https://copaamerica.com/es/grupos/'); return false;"
+						value="Llaves"></p:button>
+					<!--<p:button
+						onclick="window.open('https://es.fifa.com/worldcup/groups/'); return false;"
+						value="Tabla Posiciones"></p:button>-->
+				</div>
+			</div>
+		</div>
+		<div style="width: 100%">
+			<div class="Row">
+				<div class="Cell" style="width: 35%">
+					<p:panel>
+						<div class="Table">
+							<div class="Row">
+								<div class="Cell" style="width: 20%; vertical-align: middle;">
+									<h:outputText value="Bienvenido:"
+										style="font-weight:bold; font-size: small;">
+									</h:outputText>
+								</div>
+								<div class="Cell" style="width: 80%; vertical-align: middle;">
+									<h:outputText value="#{pollaBean.nombreParticipante}"
+										style="font-weight:bold; font-size: large; color: green;">
+									</h:outputText>
+								</div>
+							</div>
+						</div>
+						<div class="Table">
+							<div class="Row">
+								<div style="vertical-align: top;">
+									<p:dataTable id="dtbPolla" value="#{pollaBean.objPartido}"
+										var="partido" editable="true" style="font-size:x-small">
+										<p:ajax event="rowEdit" listener="#{pollaBean.resultado}"
+											immediate="true" global="false" oncomplete="onRowEdit()" />
+										<p:ajax event="rowEditCancel" />
+										<p:column style="display: none">
+											<h:outputText value="#{partido.id}" />
+										</p:column>
+										<p:column style="width: 20%;">
+											<h:outputText value="#{partido.fechaJuego}" />
+										</p:column>
+										<p:column style="width: 28%;">
+											<h:outputText value="#{partido.pais1}" />
+										</p:column>
+										<p:column style="width: 8%;">
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{partido.marcador1}">
+														<f:convertNumber type="number" maxFractionDigits="0"
+															minFractionDigits="0" />
+													</h:outputText>
+												</f:facet>
+												<f:facet name="input">
+													<h:inputText value="#{partido.marcador1}" size="3">
+														<f:convertNumber type="number" maxFractionDigits="0"
+															minFractionDigits="0" />
+													</h:inputText>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column style="width: 28%;">
+											<h:outputText value="#{partido.pais2}" />
+										</p:column>
+										<p:column style="width: 8%;">
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{partido.marcador2}">
+														<f:convertNumber type="number" maxFractionDigits="0"
+															minFractionDigits="0" />
+													</h:outputText>
+												</f:facet>
+												<f:facet name="input">
+													<h:inputText value="#{partido.marcador2}" size="3">
+														<f:convertNumber type="number" maxFractionDigits="0"
+															minFractionDigits="0" />
+													</h:inputText>
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+										<p:column style="width:12%">
+											<p:rowEditor />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+							<br />
+							<div class="Row">
+								<div class="Cell">
+									<p:dataTable id="dtbPosiciones"
+										value="#{pollaBean.objPosiciones}" var="posiciones"
+										paginator="true" rows="8">
+										<f:facet name="header">
+											<h:outputText value="Tabla Posiciones" />
+										</f:facet>
+										<p:column style="width: 8%; font-size: small;"
+											headerText="No.">
+											<h:outputText value="#{posiciones.ordinal}" />
+										</p:column>
+										<p:column style="width: 80%; font-size: small;"
+											headerText="Nombre">
+											<h:outputText value="#{posiciones.nombre}" />
+										</p:column>
+										<p:column style="width: 20%; font-size: small;"
+											headerText="Puntos">
+											<h:outputText value="#{posiciones.total}" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</p:panel>
+				</div>
+				<div class="Cell" style="vertical-align: top;">
+					<p:panel>
+						<p:dataTable id="dtbResultado" value="#{pollaBean.objResultado}"
+							var="resultado" paginator="true" rows="16">
+							<f:facet name="header">Pronósticos y Resultados</f:facet>
+							<p:column style="width: 28%; font-size: x-small"
+								headerText="Etapa">
+								<h:outputText value="#{resultado.etapa}" />
+							</p:column>
+							<p:column style="width: 12%; font-size: x-small"
+								headerText="Fecha">
+								<h:outputText value="#{resultado.fechaPartido}" />
+							</p:column>
+							<p:column style="width: 20%; font-size: x-small"
+								headerText="Local">
+								<h:outputText value="#{resultado.pais1}" />
+							</p:column>
+							<p:column style="width: 20%; font-size: x-small"
+								headerText="Visitante">
+								<h:outputText value="#{resultado.pais2}" />
+							</p:column>
+							<p:column
+								style="width: 10%; font-size: x-small; background-color: #BEF781"
+								headerText="Marcador1">
+								<h:outputText value="#{resultado.marcador1}" />
+							</p:column>
+							<p:column
+								style="width: 10%; font-size: x-small; background-color: #BEF781"
+								headerText="Marcador2">
+								<h:outputText value="#{resultado.marcador2}" />
+							</p:column>
+							<p:column
+								style="width: 12%; font-size: x-small; background-color: #F3E2A9"
+								headerText="Pronostico1">
+								<h:outputText value="#{resultado.pronostico1}" />
+							</p:column>
+							<p:column
+								style="width: 12%; font-size: x-small; background-color: #F3E2A9"
+								headerText="Pronostico2">
+								<h:outputText value="#{resultado.pronostico2}" />
+							</p:column>
+							<p:column
+								style="width: 10%; font-size: x-small; background-color: #CED8F6"
+								headerText="Puntos">
+								<h:outputText value="#{resultado.puntos}" />
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</div>
+			</div>
+		</div>
+		</b:container>
+		<p:dialog header="Cambiar contraseña" widgetVar="dlgContrasena" hideEffect="explode">
+			<div style="width: 100%">
+				<div class="Row">
+					<div class="Cell"><h:outputLabel value="Contraseña Actual"/></div>
+					<div class="Cell">
+						<h:inputSecret value="#{pollaBean.contrasenaActual}" validatorMessage="Solo se aceptan letras y números">
+							<f:validateRegex pattern="[a-zA-Z0-9]+" />
+						</h:inputSecret>
+					</div>
+				</div>
+				<div class="Row">
+					<div class="Cell"><h:outputLabel for="nueva" value="Contraseña Nueva"/></div>
+					<div class="Cell">
+						<p:password id="nueva" value="#{pollaBean.nuevaContrasena}" label="contrasena" 
+						match="confirma" required="true" validatorMessage="No conincide las contraseñas ingresadass"/>
+					</div>
+				</div>
+				<div class="Row">
+					<div class="Cell"><h:outputLabel for="confirma" value="Confirmar Contraseña"/></div>
+					<div class="Cell">
+						<p:password id="confirma" value="#{pollaBean.nuevaContrasena}" label="confirma" required="true"/>
+					</div>
+				</div>
+			</div>
+			<f:facet name="footer">
+				<center>
+					<p:commandButton value="Aceptar" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
+						update=":marcador:mensajeAlerta :marcador" oncomplete="PF('dlgContrasena').hide()" 
+						actionListener="#{pollaBean.cambiarContrasena}" >
+					</p:commandButton>
+					<p:commandButton value="Cancelar" styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('dlgContrasena').hide()"/>
+		       	</center>
+	        </f:facet>
+		</p:dialog>
+	</h:form>
+	
+	<p:ajaxStatus style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">  
+	    <f:facet name="start">  
+	        <p:graphicImage value="/imagenes/loading.gif" />  
+	    </f:facet>  
+	    <f:facet name="complete">  
+	        <h:outputText value="" />  
+	    </f:facet>  
+	</p:ajaxStatus>  
+</body>
+</html>
