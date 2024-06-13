@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<!--xmlns:b="http://bootsfaces.net/ui"-->
+<f:view contentType="text/html" encoding="UTF-8">
+	<h:head>
+		<title>Pronóstico Deportivo</title>
+		<meta name="author" content="Marcelo Muñoz" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="shortcut icon"
+			href="#{facesContext.externalContext.requestContextPath}/resource/images/balon.png"
+			type="image/x-icon" />
+		<link rel="stylesheet"
+			href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
+	</h:head>
+	<h:body>
+		<!--<ui:composition template="../templates/layout.xhtml">
+		<ui:define name="pageTitle">Pronósticos Deportivos</ui:define>
+		<ui:define name="pageContent" bootsFacesDecorator="true">-->
+
+		<p:megaMenu orientation="horizontal" autoDisplay="false">
+			<p:menuitem value="Principal" action="#{principalCtrl.principal()}" />
+			<p:menuitem value="Cambiar Contraseña"
+				action="#{principalCtrl.cambiarPassword()}" />
+			<p:menuitem value="Ingresar Resultados Oficiales"
+				action="#{principalCtrl.resultadosOficiales()}"
+				rendered="#{principalCtrl.presentarRegistroResultadosOficiales}" />
+			<p:menuitem value="Salir" action="#{principalCtrl.cerrarSesion()}"
+				immediate="true" />
+
+		</p:megaMenu>
+		<p:growl id="msgMensajes" showDetail="true" sticky="false"
+			keepAlive="false">
+			<p:autoUpdate />
+		</p:growl>
+
+		<h:form id="formMarcador">
+			<p:panel>
+				<p:panelGrid columns="2" layout="grid"
+					styleClass="showcase-text-align-center"
+					columnClasses="ui-g-12 ui-md-6, ui-g-12 ui-md-6">
+					<p:dataTable id="dtbPartido" reflow="true" widgetVar="dtPartido"
+						value="#{marcadorCtrl.listaPartido}" var="pronostico"
+						rowKey="#{pronostico.partido.partidoId}"
+						selection="#{marcador.partidoSeleccionado}" rowSelectMode="add">
+						<f:facet name="header">
+							<h:outputText value="Partidos de la fecha" />
+						</f:facet>
+						<p:column headerText="Fecha Partido">
+							<h:outputText value="#{pronostico.partido.fechaPartido}" />
+						</p:column>
+						<p:column headerText="País Local"
+							style="background-color: #BEF763;">
+							<span class="fi fi-#{pronostico.partido.equipo1.bandera}"
+								style="width: 30px; height: 20px"></span>
+							<h:outputText value=" #{pronostico.partido.equipo1.siglas}" />
+						</p:column>
+						<!-- 							<p:column headerText="Marcador Local"
+								style="background-color: #BEF763;">
+								<h:outputText value="#{pronostico.partido.marcadorLocal}" />
+								<h:outputText rendered="#{pronostico.partido.posiblesPenales}"
+									value=" (#{pronostico.partido.penalesLocal})" />
+							</p:column>
+ -->
+						<p:column headerText="Pronóstico Local"
+							style="background-color: #BEF763;">
+							<h:outputText value="#{pronostico.local}" />
+							<h:outputText rendered="#{pronostico.partido.posiblesPenales}"
+								value=" (#{pronostico.penalesLocal})" />
+						</p:column>
+						<!-- <p:column headerText="Marcador Visita"
+								style="background-color: #F3E2B2;">
+								<h:outputText value="#{pronostico.partido.marcadorVisitante}" />
+								<h:outputText rendered="#{pronostico.partido.posiblesPenales}}"
+									value=" (#{pronostico.partido.penalesVisitante})" />
+							</p:column> -->
+						<p:column headerText="Pronóstico Visita"
+							style="background-color: #F3E2B2;">
+							<h:outputText value="#{pronostico.visitante}" />
+							<h:outputText rendered="#{pronostico.partido.posiblesPenales}"
+								value=" (#{pronostico.penalesVisitante})" />
+						</p:column>
+						<p:column headerText="País Visita"
+							style="background-color: #F3E2B2;">
+							<h:outputText value="#{pronostico.partido.equipo2.siglas} " />
+							<span class="fi fi-#{pronostico.partido.equipo2.bandera}"
+								style="width: 30px; height: 20px"></span>
+						</p:column>
+						<p:column headerText="Penales" rendered="false">
+							<h:outputText value="#{pronostico.partido.pais}" />
+						</p:column>
+						<p:column headerText="Pronóstico" style="text-align: center;">
+							<p:commandButton id="btnEditar" process="@this"
+								action="#{marcadorCtrl.registroSeleccionado()}"
+								oncomplete="PF('editarPartidoDialog').show()"
+								icon="pi pi-pencil"
+								styleClass="edit-button rounded-button ui-button-success"
+								update=":formDialogo:pnlPartido" immediate="true">
+								<f:setPropertyActionListener value="#{pronostico}"
+									for="dtbPartido" target="#{marcadorCtrl.partidoSeleccionado}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+					<p:dataTable id="dtbPosiciones" reflow="true"
+						value="#{marcadorCtrl.listaParticipantes}" var="participante"
+						rows="10" paginator="true" paginatorPosition="bottom">
+						<f:facet name="header">
+							<h:outputText value="Tabla de posiciones" />
+						</f:facet>
+						<p:column headerText="Posición">
+							<h:outputText value="#{participante.posicionId}" />
+						</p:column>
+						<p:column headerText="Nombre">
+							<h:outputText value="#{participante.nombre}" />
+						</p:column>
+						<p:column headerText="Puntos">
+							<h:outputText value="#{participante.puntosPartido}" />
+						</p:column>
+						<p:column headerText="#Aciertos 5 puntos">
+							<h:outputText value="#{participante.aciertosCinco}" />
+						</p:column>
+						<p:column headerText="#Aciertos 3 puntos">
+							<h:outputText value="#{participante.aciertosTres}" />
+						</p:column>
+					</p:dataTable>
+				</p:panelGrid>
+			</p:panel>
+			<p:panel>
+				<!--b:row styleClass="show-grid">
+						<b:column col-xs="12"-->
+				<p:dataTable id="dtbPronostico" reflow="true"
+					value="#{marcadorCtrl.listaPronostico}" var="pronostico">
+					<p:column headerText="Partido" style="background-color: #BEA772;">
+						<span class="fi fi-#{pronostico.banderaLocal}"
+							style="width: 30px; height: 20px"></span>
+						<h:outputText value=" #{pronostico.local} - " />
+
+						<h:outputText value="#{pronostico.visitante} " />
+						<span class="fi fi-#{pronostico.banderaVisitante}"
+							style="width: 30px; height: 20px"></span>
+
+						<h:outputText
+							value="#{pronostico.posiblesPenales ? '   (Penales)' : ''}"
+							style="font-weight: bold;" />
+					</p:column>
+
+					<p:column headerText="Resultado Oficial"
+						style="text-align: center; background-color: #BEF781;">
+						<h:outputText value="#{pronostico.marcadorLocal}" />
+						<h:outputText rendered="#{pronostico.posiblesPenales}"
+							value=" (#{pronostico.penalesLocal})" style="font-weight: bold;" />
+
+						<h:outputText value=" - " />
+
+						<h:outputText value="#{pronostico.marcadorVisitante}" />
+						<h:outputText rendered="#{pronostico.posiblesPenales}"
+							value=" (#{pronostico.penalesVisitante})"
+							style="font-weight: bold;" />
+						<br />
+					</p:column>
+
+					<p:column headerText="Pronóstico"
+						style="text-align: center; background-color: #F3E2A9;">
+						<h:outputText value="#{pronostico.pronosticoLocal}" />
+						<h:outputText rendered="#{pronostico.posiblesPenales}"
+							value=" (#{pronostico.pronosticoPenalesLocal})"
+							style="font-weight: bold;" />
+
+						<h:outputText value=" - " />
+
+						<h:outputText value="#{pronostico.pronosticoVisitante}" />
+						<h:outputText rendered="#{pronostico.posiblesPenales}"
+							value=" (#{pronostico.pronosticoPenalesVisitante})"
+							style="font-weight: bold;" />
+					</p:column>
+					<p:column headerText="Puntos"
+						style="text-align: center; font-weight: bold; background-color: #CED8F6;">
+						<h:outputText value="#{pronostico.puntaje}" />
+					</p:column>
+					<f:facet name="footer">
+						<h:outputText value="Total: #{marcadorCtrl.totalPuntos}" />
+					</f:facet>
+				</p:dataTable>
+				<!--/b:column>
+					</b:row-->
+			</p:panel>
+		</h:form>
+
+		<h:form id="formDialogo">
+			<p:dialog id="editarPartido" header="Pronóstico del partido"
+				showEffect="fade" modal="true" widgetVar="editarPartidoDialog"
+				responsive="true">
+				<p:outputPanel id="pnlPartido" class="ui-fluid">
+					<p:panel rendered="#{marcadorCtrl.partidoSeleccionado != null}">
+						<p:panelGrid columns="3" layout="grid"
+							styleClass="showcase-text-align-center"
+							columnClasses="ui-g-4 ui-md-4, ui-g-4 ui-md-4, ui-g-4 ui-md-4">
+							<p:outputLabel id="lblPartido" value="Partido" />
+							<p:outputLabel id="lblMarcador" value="Marcador" />
+							<p:outputLabel id="lblPenales" value="Penales" />
+
+							<h:panelGroup>
+								<span
+									class="fi fi-#{marcadorCtrl.partidoSeleccionado.partido.equipo1.bandera}"
+									style="width: 30px; height: 20px"></span>
+								<h:outputText
+									value=" #{marcadorCtrl.partidoSeleccionado.partido.equipo1.siglas}" />
+							</h:panelGroup>
+							<p:inputText
+								id="txtMarcadorLocal"
+								value="#{marcadorCtrl.partidoSeleccionado.local}"
+								size="1" maxlength="2">
+								<p:ajax event="change" update="txtPenalesLocal txtPenalesVisita"></p:ajax>
+							</p:inputText>
+							<p:inputText id="txtPenalesLocal"
+								value="#{marcadorCtrl.partidoSeleccionado.penalesLocal}"
+								size="1" maxlength="2"
+								rendered="#{marcadorCtrl.partidoSeleccionado.partido.etapa.penales}"
+								disabled="#{marcadorCtrl.partidoSeleccionado.local != null and  marcadorCtrl.partidoSeleccionado.visitante != null and marcadorCtrl.partidoSeleccionado.local eq marcadorCtrl.partidoSeleccionado.visitante ? false : true}" />
+							<h:panelGroup>
+								<span
+									class="fi fi-#{marcadorCtrl.partidoSeleccionado.partido.equipo2.bandera}"
+									style="width: 30px; height: 20px"></span>
+								<h:outputText
+									value=" #{marcadorCtrl.partidoSeleccionado.partido.equipo2.siglas}" />
+							</h:panelGroup>
+							<p:inputText id="txtMarcadorVisita"
+								value="#{marcadorCtrl.partidoSeleccionado.visitante}"
+								size="1" maxlength="2">
+								<p:ajax event="change" update="txtPenalesLocal txtPenalesVisita"></p:ajax>
+							</p:inputText>
+							<p:inputText id="txtPenalesVisita"
+								value="#{marcadorCtrl.partidoSeleccionado.penalesVisitante}"
+								size="1" maxlength="2"
+								rendered="#{marcadorCtrl.partidoSeleccionado.partido.etapa.penales}"
+								disabled="#{marcadorCtrl.partidoSeleccionado.local != null and  marcadorCtrl.partidoSeleccionado.visitante != null and marcadorCtrl.partidoSeleccionado.local eq marcadorCtrl.partidoSeleccionado.visitante ? false : true}" />
+						</p:panelGrid>
+					</p:panel>
+				</p:outputPanel>
+				<f:facet name="footer">
+					<p:commandButton value="Guardar" icon="pi pi-check"
+						actionListener="#{marcadorCtrl.guardarPronostico}"
+						update="pnlPartido formMarcador" process="pnlPartido @this"
+						oncomplete="PF('editarPartidoDialog').hide()" />
+					<p:commandButton value="Cancelar" icon="pi pi-times"
+						onclick="PF('editarPartidoDialog').hide()"
+						class="ui-button-secondary" type="button" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+		<!--</ui:define>
+	</ui:composition>-->
+
+	</h:body>
+</f:view>
+</html>

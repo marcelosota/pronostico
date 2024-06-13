@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>ec.com.pronosticodeportivo</groupId>
+	<artifactId>pronostico-deportivo-web</artifactId>
+	<version>1.0</version>
+	<packaging>war</packaging>
+
+	<name>pronostico-web Maven Webapp</name>
+	<!-- FIXME change it to the project's website -->
+	<url>http://www.example.com</url>
+
+
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<nemonico-sistema>pronostico</nemonico-sistema>
+
+		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+		<jboss.home>H:\Servidores\wildfly-preview-26.1.2.Final\standalone\deployments\</jboss.home>
+		<jboss.domain>default</jboss.domain>
+		<project.home>H:\Desarrollo\Workspace\Workspace_POLLA\</project.home>
+		<ext.location>${project.home}/ext</ext.location>
+		<lib.location>${basedir}/src/main/webapp/WEB-INF/lib</lib.location>
+	</properties>
+
+
+
+	<dependencies>
+		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>10.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-web-api</artifactId>
+			<version>10.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.enterprise</groupId>
+			<artifactId>jakarta.enterprise.cdi-api</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.faces</groupId>
+			<artifactId>jakarta.faces-api</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>font-awesome</artifactId>
+			<version>6.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.bootsfaces</groupId>
+			<artifactId>bootsfaces</artifactId>
+			<version>1.5.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>12.0.0</version>
+			<classifier>jakarta</classifier>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>jakarta.mail</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ec.com.pronosticodeportivo</groupId>
+			<artifactId>pronostico-deportivo-ejb</artifactId>
+			<version>1.0</version>
+
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>pronostico-deportivo-web</finalName>
+		<pluginManagement>
+			<!-- lock down plugins versions to avoid using Maven defaults (may be 
+				moved to parent pom) -->
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.10.1</version>
+					<configuration>
+						<source>11</source>
+						<target>11</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>3.2.2</version>
+				</plugin>
+				
+				<plugin> 
+					<groupId>org.wildfly.plugins</groupId> 
+					<artifactId>wildfly-maven-plugin</artifactId> 
+					<version>2.0.0.Final</version> 
+					<configuration> 
+						<filename>${project.build.finalName}.war</filename> 
+						<!--<hostname>34.42.74.169</hostname> -->
+						<hostname>localhost</hostname>
+						<port>9990</port> 
+						<username>candrade</username> 
+						<password>Chr1$t1@n</password> 
+					</configuration> 
+				</plugin>
+
+<!-- 
+				<plugin> 
+					<groupId>org.wildfly.plugins</groupId> 
+					<artifactId>wildfly-maven-plugin</artifactId> 
+					<version>2.0.0.Final</version> 
+					<configuration> 
+						<filename>${project.build.finalName}.war</filename> 
+						<hostname>34.148.86.188</hostname> 
+						<port>9990</port> 
+						<username>candrade</username> 
+						<password>Chr1$t1@n</password> 
+					</configuration> 
+				</plugin>
+				
+				-->
+				<!--  <plugin>
+					<groupId>org.wildfly.plugins</groupId>
+					<artifactId>wildfly-maven-plugin</artifactId>
+					<version>2.0.0.Final</version>
+				</plugin>-->
+
+			<!--<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<configuration>
+							<tasks>
+								<delete file="${path.jbosss.deployments}/${nemonico-sistema}.war" />
+								<delete
+									file="${path.jboss.deployments}/${nemonico-sistema}.war.deployed" />
+								<delete
+									file="${path.jboss.deployments}/${nemonico-sistema}.war.failed" />
+								<copy file="target/${nemonico-sistema}.war"
+									tofile="${path.jboss.deployments}/${nemonico-sistema}.war" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>-->
+
+
+			</plugins>
+
+
+
+
+		</pluginManagement>
+
+
+
+
+	</build>
+</project>

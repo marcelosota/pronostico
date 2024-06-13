@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<link rel="stylesheet" href="resources/css/login.css" />
+	<title>Pronósticos Futboleros</title>
+	<link rel="shortcut icon"
+		href="#{facesContext.externalContext.requestContextPath}/imagenes/icono_pronostico.ico"
+		type="image/x-icon" />
+	<link rel="icon"
+		href="#{facesContext.externalContext.requestContextPath}/imagenes/icono_pronostico.ico"
+		type="image/x-icon" />
+</h:head>
+<body>
+	<h:form id="login">
+		<p:growl id="mensajeAlerta" showDetail="true" sticky="true" />
+
+
+
+		<div class="container">
+			<div class="brand-logo">
+				<h:graphicImage value="/imagenes/logo_pronostico.jpg"
+					class="brand-logo" style="width: 100%;height: 100%" />
+			</div>
+			<div class="brand-title">PRONÓSTICOS MUNDIAL</div>
+			<div class="inputs">
+				<p:outputLabel value="Cédula" />
+				<span class="ui-input-icon-left"> <i class="pi pi-user" /> <p:inputText
+						value="#{loginController.username}" placeholder="Número de Cédula"
+						requiredMessage="El campo Usuario es obligatorio" immediate="true" />
+				</span>
+
+				<p:outputLabel value="Contraseña" />
+
+				<span class="ui-input-icon-left"> <i class="pi pi-key" /> <p:password
+						type="" value="#{loginController.password}"
+						placeholder="Contraseña"
+						requiredMessage="El campo Contraseña es obligatorio"
+						immediate="true" />
+				</span>
+				<p:commandButton id="btnConsultar" value="Ingresar" update="@form"
+					actionListener="#{loginController.login}"
+					icon="pi pi-chevron-right" action="#{loginController.login}">
+				</p:commandButton>
+
+				<p:commandLink id="btnRecuperar" value="Recuperar contraseña"
+					onclick="PF('dlgContrasena').show()">
+				</p:commandLink>
+			</div>
+		</div>
+
+		<p:dialog header="Recuperar contraseña" widgetVar="dlgContrasena"
+			hideEffect="explode" modal="true" responsive="true" id="dlgRecuperar">
+
+			<div>
+				<div class="inputs">
+					<p:outputLabel value="Cédula" />
+					<p:inputText value="#{loginController.usuarioRecuperar}"
+						placeholder="Número Cédula">
+						<p:ajax process="@this" partialSubmit="true" />
+					</p:inputText>
+				</div>
+			</div>
+
+			<f:facet name="footer">
+				<center>
+					<p:commandButton value="Aceptar" styleClass="ui-confirmdialog-yes"
+						icon="pi pi-check" update=":login:mensajeAlerta :login"
+						oncomplete="PF('dlgContrasena').hide()"
+						process="@this dlgRecuperar"
+						actionListener="#{loginController.recuperarContrasenaCedula}"
+						immediate="true">
+					</p:commandButton>
+				</center>
+			</f:facet>
+		</p:dialog>
+	</h:form>
+</body>
+</html>

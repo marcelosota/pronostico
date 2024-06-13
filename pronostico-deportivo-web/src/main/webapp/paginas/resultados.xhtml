@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	<!--xmlns:b="http://bootsfaces.net/ui"-->
+	<f:view contentType="text/html" encoding="UTF-8">
+		<h:head>
+			<title>Pronóstico Deportivo</title>
+			<meta name="author" content="Marcelo Muñoz" />
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+			<link rel="shortcut icon"
+				href="#{facesContext.externalContext.requestContextPath}/resource/images/balon.png"
+				type="image/x-icon" />
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"/>
+		</h:head>
+		<h:body>
+			<p:growl id="msgMensajes" showDetail="true" sticky="false" keepAlive="false">
+				<p:autoUpdate />
+			</p:growl>
+				<p:megaMenu orientation="horizontal" autoDisplay="false">
+			 	<p:menuitem value="Principal" action="#{principalCtrl.principal()}" />
+				
+			</p:megaMenu>
+			<h:form id="formMarcador">
+				<p:panel>
+					<p:panelGrid columns="2" layout="grid" styleClass="showcase-text-align-center"
+	                 columnClasses="ui-g-12 ui-md-6, ui-g-12 ui-md-6">
+						<p:dataTable id="dtbPartido"
+							reflow="true"
+							widgetVar="dtPartido"
+							value="#{resultadosCtrl.listaPartido}" 
+							var="partido"
+							rowKey="#{partido.partidoId}"
+							selection="#{marcador.partidoSeleccionado}"
+							rowSelectMode="add">
+							<f:facet name="header">
+								<h:outputText value="Partidos de la fecha" />
+							</f:facet>
+							<p:column headerText="Fecha Partido">
+								<h:outputText value="#{partido.fechaPartido}" />
+							</p:column>
+							<p:column headerText="País Local" style="background-color: #BEF763;">
+								<span class="fi fi-#{partido.equipo1.bandera}" style="width: 30px; height: 20px"></span>
+								<h:outputText value=" #{partido.equipo1.siglas}" />
+							</p:column>						
+							<p:column headerText="Marcador Local" style="background-color: #BEF763;">
+								<h:outputText  value="#{partido.marcadorLocal}" />
+							</p:column>
+							<p:column headerText="Marcador Visita" style="background-color: #F3E2B2;">
+								<h:outputText value="#{partido.marcadorVisitante}" />
+							</p:column>
+							<p:column headerText="País Visita" style="background-color: #F3E2B2;">							
+								<h:outputText value="#{partido.equipo2.siglas} "/>
+								<span class="fi fi-#{partido.equipo2.bandera}" style="width: 30px; height: 20px"></span>
+							</p:column>
+							<p:column headerText="Penales" rendered="false">
+								<h:outputText value="#{partido.pais}" />
+							</p:column>
+							<p:column headerText="Pronóstico" style="text-align: center;">
+								<p:commandButton id="btnEditar" 
+									process="@this"
+									action="#{resultadosCtrl.registroSeleccionado()}"
+									oncomplete="PF('editarPartidoDialog').show()"
+									icon="pi pi-pencil"
+	                                styleClass="edit-button rounded-button ui-button-success"
+	                                update=":formDialogo:pnlPartido"
+	                                immediate="true">
+		                            <f:setPropertyActionListener value="#{partido}" for="dtbPartido" target="#{resultadosCtrl.partidoSeleccionado}"/>
+		                        </p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:panelGrid>
+				</p:panel>
+			</h:form>
+			
+			<h:form id="formDialogo">
+				<p:dialog id="editarPartido" header="Pronóstico del partido" showEffect="fade" modal="true" 
+					widgetVar="editarPartidoDialog" responsive="true">
+					<p:outputPanel id="pnlPartido" class="ui-fluid">
+						<p:panel rendered="#{resultadosCtrl.partidoSeleccionado != null}">
+							<p:panelGrid columns="#{resultadosCtrl.partidoSeleccionado.etapa.penales ?3:2}" layout="grid" 
+								styleClass="showcase-text-align-center" 
+								columnClasses="ui-g-4 ui-md-4, ui-g-4 ui-md-4, ui-g-4 ui-md-4">
+								<p:outputLabel id="lblPartido" value="Partido" />
+								<p:outputLabel id="lblMarcador" value="Marcador" />
+								<p:outputLabel id="lblPenales" value="Penales" rendered="#{resultadosCtrl.partidoSeleccionado.etapa.penales}" />
+								
+								<h:panelGroup>
+									<span class="fi fi-#{resultadosCtrl.partidoSeleccionado.equipo1.bandera}" style="width: 30px; height: 20px"></span>
+									<h:outputText value=" #{resultadosCtrl.partidoSeleccionado.equipo1.siglas}" />
+								</h:panelGroup>
+								<p:inputText id="txtMarcadorLocal" value="#{resultadosCtrl.partidoSeleccionado.marcadorLocal}" size="1" maxlength="2" />
+								<p:inputText id="txtPenalesLocal" 
+									value="#{resultadosCtrl.partidoSeleccionado.penalesLocal}" 
+									size="1" maxlength="2"
+									rendered="#{resultadosCtrl.partidoSeleccionado.etapa.penales}" />
+								
+								<h:panelGroup>
+									<span class="fi fi-#{resultadosCtrl.partidoSeleccionado.equipo2.bandera}" style="width: 30px; height: 20px"></span>
+									<h:outputText value=" #{resultadosCtrl.partidoSeleccionado.equipo2.siglas}"/>
+								</h:panelGroup>
+								<p:inputText id="txtMarcadorVisita" value="#{resultadosCtrl.partidoSeleccionado.marcadorVisitante}" size="1" maxlength="2" />
+								<p:inputText id="txtPenalesVisita" 
+									value="#{resultadosCtrl.partidoSeleccionado.penalesVisitante}" 
+									size="1" maxlength="2"
+									rendered="#{resultadosCtrl.partidoSeleccionado.etapa.penales}" />
+							</p:panelGrid>					
+						</p:panel>
+					</p:outputPanel>
+					<f:facet name="footer">
+		                <p:commandButton value="Guardar" icon="pi pi-check" 
+		                	actionListener="#{resultadosCtrl.guardarResultado()}"
+		                    update="pnlPartido formMarcador" process="pnlPartido @this" oncomplete="PF('editarPartidoDialog').hide()" />
+		                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('editarPartidoDialog').hide()"
+		                    class="ui-button-secondary" type="button" />
+		            </f:facet>
+				</p:dialog>
+			</h:form>
+		</h:body>
+	</f:view>
+</html> 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf16666721777730" configfile="/pronostico-deportivo-web/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="inicio.xhtml" x="48" y="252" id="pf16677058660000" referenceLink="//@navigationRule.5/@navigationCase.0/@toViewId|" outlinks="pf16677060852064 pf16680574827410 pf16683782388060" inlinks="pf16677060852064 pf16683787405432 pf16686696793266 pf16687433114870" path="/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/registro.xhtml" x="372" y="384" id="pf16680574827411" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf16687433114870" inlinks="pf16680574827410" path="/paginas/registro.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/marcador.xhtml" x="552" y="168" id="pf16683782388061" referenceLink="//@navigationRule.4/@navigationCase.0/@toViewId|" outlinks="pf16683787405432 pf16686695501603" inlinks="pf16683782388060 pf16686695501604" path="/paginas/marcador.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/cambiarPassword.xhtml" x="312" y="36" id="pf16686695501605" referenceLink="//@navigationRule.5/@fromViewId|" outlinks="pf16686695501604 pf16686696793266" inlinks="pf16686695501603" path="/paginas/cambiarPassword.xhtml"/>
+  <links id="pf16680574827410" target="pf16680574827411" source="pf16677058660000" outcome="registrar"/>
+  <links id="pf16683782388060" target="pf16683782388061" source="pf16677058660000" outcome="success"/>
+  <links id="pf16683787405432" target="pf16677058660000" source="pf16683782388061" outcome="salir"/>
+  <links id="pf16686695501603" target="pf16686695501605" source="pf16683782388061" outcome="cambiarPassword"/>
+  <links id="pf16686695501604" target="pf16683782388061" source="pf16686695501605" outcome="principal"/>
+  <links id="pf16686696793266" target="pf16677058660000" source="pf16686695501605" outcome="salir"/>
+  <links id="pf16687433114870" target="pf16677058660000" source="pf16680574827411" outcome="regresar"/>
+  <links id="pf16677060852064" target="pf16677058660000" source="pf16677058660000" outcome="index">
+    <bendPoints d1Height="-36" d2Height="-36"/>
+    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
+    <bendPoints d1Width="-64" d2Width="-64"/>
+  </links>
+</pageflow:Pageflow>

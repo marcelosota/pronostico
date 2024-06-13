@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jakartaee="https://jakarta.ee/xml/ns/jakartaee"
+	xmlns:web="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="5.0"> -->
+	
+	<web-app 
+    version="3.1" 
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+	<display-name>/pronostico</display-name>
+	<context-param>
+		<param-name>jakarta.faces.PROJECT_STAGE</param-name>
+		<param-value>Production</param-value>
+	</context-param>
+
+ 	<context-param>
+		<param-name>BootsFaces_USETHEME</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>BootsFaces_THEME</param-name>
+		<param-value>cerulean</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>net.bootsfaces.get_jquery_from_cdn</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>net.bootsfaces.get_jqueryui_from_cdn</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>net.bootsfaces.get_bootstrap_from_cdn</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>net.bootsfaces.get_fontawesome_from_cdn</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>net.bootsfaces.defaults.decorator</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>jakarta.faces.FACELETS_DECORATORS</param-name>
+		<param-value>net.bootsfaces.decorator.BootsFacesTagDecorator</param-value>
+	</context-param>
+
+	<context-param> <!-- Activates the waitcursor and the double-click protection -->
+		<param-name>net.bootsfaces.blockUI</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+<!-- PRIMEFACES Activar -->
+<context-param>
+    <param-name>primefaces.CSP</param-name>
+    <param-value>true</param-value>
+</context-param>
+<context-param>
+    <param-name>primefaces.CSP</param-name>
+    <param-value>reportOnly</param-value>
+</context-param>
+<context-param>
+    <param-name>primefaces.CSP_REPORT_ONLY_POLICY</param-name>
+    <param-value>report-uri /my-csp-reports</param-value>
+</context-param>
+
+<context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>nova-light</param-value>
+</context-param>
+
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+
+	<!-- Tiempo duración sesión -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+	<!-- Archivos por defecto -->
+	<welcome-file-list>
+		<welcome-file>index.jsf</welcome-file>
+	</welcome-file-list>
+</web-app>

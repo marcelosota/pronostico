@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+    version="2.3">
+
+<navigation-rule>
+    <from-view-id>/index.xhtml</from-view-id>
+    <navigation-case>
+        <from-outcome>index</from-outcome>
+        <to-view-id>/index.xhtml</to-view-id>
+    </navigation-case>
+    <navigation-case>
+        <from-outcome>registrar</from-outcome>
+        <to-view-id>/paginas/registro.xhtml</to-view-id>
+    </navigation-case>
+	<navigation-case>
+		<from-outcome>success</from-outcome>
+		<to-view-id>/paginas/marcador.xhtml</to-view-id>
+	</navigation-case>
+</navigation-rule>
+<navigation-rule>
+	<display-name>paginas/marcador.xhtml</display-name>
+	<from-view-id>/paginas/marcador.xhtml</from-view-id>
+	<navigation-case>
+		<from-outcome>salir</from-outcome>
+		<to-view-id>/index.xhtml</to-view-id>
+	</navigation-case>
+</navigation-rule>
+<navigation-rule>
+	<display-name>paginas/marcador.xhtml</display-name>
+	<from-view-id>/paginas/marcador.xhtml</from-view-id>
+	<navigation-case>
+		<from-outcome>cambiarPassword</from-outcome>
+		<to-view-id>/paginas/cambiarPassword.xhtml</to-view-id>
+	</navigation-case>
+</navigation-rule>
+<navigation-rule>
+	<display-name>paginas/cambiarPassword.xhtml</display-name>
+	<from-view-id>/paginas/cambiarPassword.xhtml</from-view-id>
+	<navigation-case>
+		<from-outcome>principal</from-outcome>
+		<to-view-id>/paginas/marcador.xhtml</to-view-id>
+	</navigation-case>
+</navigation-rule>
+<navigation-rule>
+	<display-name>paginas/cambiarPassword.xhtml</display-name>
+	<from-view-id>/paginas/cambiarPassword.xhtml</from-view-id>
+	<navigation-case>
+		<from-outcome>salir</from-outcome>
+		<to-view-id>/index.xhtml</to-view-id>
+	</navigation-case>
+</navigation-rule>
+<navigation-rule>
+	<display-name>paginas/registro.xhtml</display-name>
+	<from-view-id>/paginas/registro.xhtml</from-view-id>
+	<navigation-case>
+		<from-outcome>regresar</from-outcome>
+		<to-view-id>/index.xhtml</to-view-id>
+	</navigation-case>
+</navigation-rule>
+
+
+
+</faces-config>

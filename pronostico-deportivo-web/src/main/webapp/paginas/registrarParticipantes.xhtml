@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	<!--xmlns:b="http://bootsfaces.net/ui"-->
+	<f:view contentType="text/html" encoding="UTF-8">
+		<h:head>
+			<title>Pronóstico Deportivo</title>
+			<meta name="author" content="Marcelo Muñoz" />
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+			<link rel="shortcut icon"
+				href="#{facesContext.externalContext.requestContextPath}/resource/images/balon.png"
+				type="image/x-icon" />
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"/>
+		</h:head>
+		<h:body>
+			<p:growl id="msgMensajes" showDetail="true" sticky="false" keepAlive="false">
+				<p:autoUpdate />
+			</p:growl>
+		
+			<h:form id="formParticipante">
+				<p:panel>
+					<p:panelGrid columns="1" layout="grid" styleClass="showcase-text-align-center"
+	                 columnClasses="ui-g-12 ui-md-12">
+	                 	<p:commandButton id="btnNuevo" 
+	                 		value="Nuevo Participante" 
+	                 		action="#{registrarParticipanteCtrl.nuevoParticipante()}"
+	                 		oncomplete="PF('editarParticipanteDialog').show()"
+	                 		update=":formDialogo:pnlParticipante"
+	                 		class="ui-button-primary" />
+	                 		
+						<p:dataTable id="dtbParticipante"
+							reflow="true"
+							widgetVar="dtParticipante"
+							value="#{registrarParticipanteCtrl.listaUsuario}" 
+							var="usu"
+							rowKey="#{usu.usuarioId}"
+							selection="#{registrarParticipanteCtrl.usuarioSeleccionado}"
+							rowSelectMode="add"
+							rows="8"
+							paginator="true"
+							paginatorPosition="bottom">
+							<f:facet name="header">
+								<h:outputText value="Participantes" />
+							</f:facet>
+							<p:column headerText="Número de identificación">
+								<h:outputText value="#{usu.login}" />
+							</p:column>
+							<p:column headerText="Nombre">
+								<h:outputText value=" #{usu.nombre}" />
+							</p:column>						
+							<p:column headerText="Apellido">
+								<h:outputText  value="#{usu.apellido}" />
+							</p:column>
+							<p:column headerText="Teléfono">
+								<h:outputText value="#{usu.telefono}" />
+							</p:column>
+							<p:column headerText="Correo Electrónico">							
+								<h:outputText value="#{usu.email} "/>
+							</p:column>
+							<p:column headerText="Estado">
+								<h:outputText value="#{usu.estado eq 'A' ? 'Activo' : 'Inactivo'}" />
+							</p:column>
+							<p:column headerText="Acciones" style="text-align: center;">
+								<p:commandButton id="btnEditar" 
+									process="@this"
+									action="#{registrarParticipanteCtrl.registroSeleccionado()}"
+									oncomplete="PF('editarParticipanteDialog').show()"
+									icon="pi pi-pencil"
+	                                styleClass="edit-button rounded-button ui-button-success"
+	                                update=":formDialogo:pnlParticipante"
+	                                immediate="true">
+		                            <f:setPropertyActionListener value="#{usu}" for="dtbParticipante" target="#{registrarParticipanteCtrl.usuarioSeleccionado}"/>
+		                        </p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:panelGrid>
+				</p:panel>
+			</h:form>
+			
+			<h:form id="formDialogo">
+				<p:dialog id="editarParticipante" header="Participantes" showEffect="fade" modal="true" 
+					widgetVar="editarParticipanteDialog" responsive="true">
+					<p:outputPanel id="pnlParticipante" class="ui-fluid">
+						<p:panel>
+							<p:panelGrid columns="1" layout="grid" 
+								styleClass="showcase-text-align-center" 
+								columnClasses="ui-g-12 ui-md-6">
+								<p:outputLabel for="txtLogin" value="Número de identificación" />
+								<p:inputText id="txtLogin" value="#{registrarParticipanteCtrl.usuarioSeleccionado.login}" 
+									required="true" size="15" maxlength="10" />
+								
+								<p:outputLabel for="txtNombre" value="Nombre" />
+								<p:inputText id="txtNombre" value="#{registrarParticipanteCtrl.usuarioSeleccionado.nombre}"
+									required="true" size="40" />
+								
+								<p:outputLabel for="txtApellido" value="Apellido" />
+								<p:inputText id="txtApellido" value="#{registrarParticipanteCtrl.usuarioSeleccionado.apellido}"
+									required="true" size="40" />
+									
+								<p:outputLabel for="txtTelefono" value="Teléfono" />
+								<p:inputText id="txtTelefono" value="#{registrarParticipanteCtrl.usuarioSeleccionado.telefono}"
+									required="true" size="15" />
+									
+								<p:outputLabel for="txtEmail" value="Correo electrónico" />
+								<p:inputText id="txtEmail" value="#{registrarParticipanteCtrl.usuarioSeleccionado.email}"
+									required="true" size="80" />
+									
+								<p:outputLabel for="txtContrasena" value="Contraseña" />
+								<p:password id="txtContrasena" value="#{registrarParticipanteCtrl.usuarioSeleccionado.contrasena}"
+									size="40" />
+								
+								<p:outputLabel for="txtEstado" value="Estado" />
+								<p:selectOneMenu id="txtEstado" value="#{registrarParticipanteCtrl.usuarioSeleccionado.estado}" 
+									required="true">
+									<f:selectItem itemLabel="Activo" itemValue="A"/>
+									<f:selectItem itemLabel="Inactivo" itemValue="I"/>
+								</p:selectOneMenu>
+									
+							</p:panelGrid>					
+						</p:panel>
+					</p:outputPanel>
+					<f:facet name="footer">
+		                <p:commandButton value="Guardar" icon="pi pi-check" 
+		                	actionListener="#{registrarParticipanteCtrl.guardarUsuario()}"
+		                    update="pnlParticipante formParticipante" process="pnlParticipante @this" oncomplete="PF('editarParticipanteDialog').hide()" />
+		                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('editarParticipanteDialog').hide()"
+		                    class="ui-button-secondary" type="button" />
+		            </f:facet>
+				</p:dialog>
+			</h:form>
+		</h:body>
+	</f:view>
+</html> 

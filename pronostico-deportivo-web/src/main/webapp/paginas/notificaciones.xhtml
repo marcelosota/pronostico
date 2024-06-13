@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Pronóstico Deportivo</title>
+	<meta name="author" content="Marcelo Muñoz" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="shortcut icon"
+		href="#{facesContext.externalContext.requestContextPath}/resource/images/balon.png"
+		type="image/x-icon" />
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:panel>
+			<p:panelGrid columns="2" layout="grid"
+				styleClass="showcase-text-align-center"
+				columnClasses="ui-g-12 ui-md-6, ui-g-12 ui-md-6">
+				<p:dataTable id="dtbPartido" reflow="true" widgetVar="dtPartido"
+					value="#{notificacionesCtrl.listaPartido}" var="partido"
+					rowKey="#{partido.partidoId}"
+					selection="#{notificacionesCtrl.partidoSeleccionado}"
+					rowSelectMode="add">
+					<f:facet name="header">
+						<h:outputText value="Partidos de la fecha" />
+					</f:facet>
+					<p:column headerText="Fecha Partido">
+						<h:outputText value="#{partido.fechaPartido}" />
+					</p:column>
+					<p:column headerText="País Local"
+						style="background-color: #BEF763;">
+						<span class="fi fi-#{partido.equipo1.bandera}"
+							style="width: 30px; height: 20px"></span>
+						<h:outputText value=" #{partido.equipo1.siglas}" />
+					</p:column>
+					<p:column headerText="País Visita"
+						style="background-color: #F3E2B2;">
+						<h:outputText value="#{partido.equipo2.siglas} " />
+						<span class="fi fi-#{partido.equipo2.bandera}"
+							style="width: 30px; height: 20px"></span>
+					</p:column>
+					<p:column headerText="Penales" rendered="false">
+						<h:outputText value="#{partido.pais}" />
+					</p:column>
+					<p:column headerText="Notificar" style="text-align: center;">
+						<p:commandButton id="btnEditar" process="@this" value="Notificar"
+							action="#{notificacionesCtrl.notificarPartido()}"
+							styleClass="edit-button rounded-button ui-button-success"
+							immediate="true" rendered="#{!partido.notificado}" update="@form">
+							<f:setPropertyActionListener value="#{partido}" for="dtbPartido"
+								target="#{notificacionesCtrl.partidoSeleccionado}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</p:panel>
+	</h:form>
+</h:body>
+</html>

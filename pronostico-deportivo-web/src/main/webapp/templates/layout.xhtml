@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><ui:insert name="pageTitle">Titulo</ui:insert></title>
+	<meta name="author" content="Marcelo Muñoz" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
+	<link rel="shortcut icon"
+		href="#{facesContext.externalContext.requestContextPath}/resource/images/balon.png"
+		type="image/x-icon" />
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
+
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</h:head>
+<h:body>
+	<p:growl id="msgMensajes" showDetail="true" sticky="false"
+		keepAlive="false">
+		<p:autoUpdate />
+	</p:growl>
+	
+		<p:panel style="text-align:center;">
+		
+			<p:megaMenu orientation="horizontal" autoDisplay="false">
+			 	<p:menuitem value="Principal" action="#{principalCtrl.principal()}" />
+				<p:menuitem value="Cambiar Contraseña" action="#{principalCtrl.cambiarPassword()}" />
+				<p:menuitem value="Ingresar Resultados Oficiales" action="#{principalCtrl.resultadosOficiales()}" rendered="#{principalCtrl.presentarRegistroResultadosOficiales}" />
+				<p:menuitem value="Salir" action="#{principalCtrl.cerrarSesion()}" immediate="true" />
+				
+			</p:megaMenu> 
+			<p:outputLabel style="ont-size: larger;font-weight: bold;text-align: center;color: #8A1515;">PRONOSTICOS MUNDIAL QATAR 2022</p:outputLabel>
+			<ui:insert name="pageContent">Contenido</ui:insert>
+		</p:panel>
+	
+</h:body>
+</html>

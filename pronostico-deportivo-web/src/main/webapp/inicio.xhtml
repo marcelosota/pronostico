@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+<!-- <html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="jakarta.faces.facelets" 
+	xmlns:f="jakarta.faces.core"
+	xmlns:h="jakarta.faces.html" 
+	xmlns:b="http://bootsfaces.net/ui"> -->
+
+<!-- <h:head>
+	<title>Pronostico Futbolero</title>
+
+</h:head> -->
+<!--<h:body>
+ <b:form id="loginForm">
+  <b:container layout="fluid">
+    <b:panel title="login screen" look="primary">
+      <b:row >
+        <b:column medium-screen="2">
+          <h:outputText value="Username:" for="username" />
+        </b:column>
+        <b:column medium-screen="4">
+          <b:inputText placeholder="Username" id="username" value="" required="true"
+                       ajax="true" autocomplete="false" update="@(.message)">
+            <f:facet name="prepend">
+              <b:icon name="user" />
+            </f:facet>
+          </b:inputText>
+        </b:column>
+        <b:column medium-screen="6" style-class="message">
+          <b:message for="username" />
+        </b:column>
+      </b:row>
+      <b:row tooltip="This password has fancy error messages.">
+        <b:column medium-screen="2">
+          <h:outputText value="Password:" />
+        </b:column>
+        <b:column medium-screen="4">
+          <b:inputSecret placeholder="Password" id="password" value=""
+                         ajax="true" autocomplete="false" update="@(.message)">
+            <f:facet name="prepend">
+              <b:iconAwesome name="key" />
+            </f:facet>
+          </b:inputSecret>
+        </b:column>
+        <b:column medium-screen="6" styleClass="message">
+          <b:message for="password" line-break-tag="&lt;p&gt;&lt;hr /&gt;&lt;/p&gt;"/>
+        </b:column>
+      </b:row>
+      <b:row>
+        <b:column span="2" offset="2">
+          <b:commandButton value="login" onclick="ajax:loginController.login()" update="@form" look="primary"
+                           style="width:100%" />
+        </b:column>
+        <b:column span="2">
+          <b:commandButton value="password forgotten" onclick="ajax:loginController.forgotPassword()" update="@form"
+                           look="danger" style="width:100%" />
+        </b:column>
+      </b:row>
+    </b:panel>
+  </b:container>
+</b:form>
+-->
+<!--
+<h:body>
+<b:container fluid="true">
+<h:form id="loginForm">
+  <b:row>
+    <b:column medium-screen="2">
+      <h:outputText value="Username:"/>
+    </b:column>
+    <b:column medium-screen="4">
+      <b:inputText placeholder="Username" />
+    </b:column>
+    <b:column medium-screen="6">
+      <b:message/>
+    </b:column>
+  </b:row>
+  <b:row>
+    <b:column medium-screen="2">
+      <h:outputText value="Password:" />
+    </b:column>
+    <b:column medium-screen="4">
+      <b:inputSecret placeholder="Password" />
+    </b:column>
+    <b:column medium-screen="6">
+      <b:message />
+    </b:column>
+  </b:row>
+  <b:row>
+    <b:column span="2" offset="2">
+      <b:commandButton update="@form" value="Ingresar" look="primary"
+			actionListener="#{loginController.login}" />
+    </b:column>
+    <b:column span="2">
+      <b:commandButton value="password forgotten" look="danger" style="width:100%" />
+    </b:column>
+  </b:row>
+  </h:form>
+</b:container>
+</h:body>
+-->
+
+<ui:composition template="templates/layout.xhtml">
+	<ui:define name="pageTitle">Login</ui:define>
+	<ui:define name="pageContent" bootsFacesDecorator="true">
+		<h:form id="loginForm">
+			<h:messages id="mensajeAlerta" showDetail="true" globalOnly="true"
+				severity="error,fatal,info" />
+
+			<p:panelGrid columns="2" style="bo">
+				<p:inputText id="usernameDiv" fieldId="j_username" name="j_username"
+					label="Nro. Cédula:" placeholder="Nro. Cèdula"
+					value="#{loginController.username}" required="true"
+					requiredMessage="Campo Obligatorio" />
+				<b:message for="@previous" />
+
+				<b:inputSecret id="passwordDiv" fieldId="j_password"
+					name="j_password" placeholder="Contraseña"
+					value="#{loginController.password}" label="Password:"
+					required="true" requiredMessage="Campo Obligatorio" />
+				<b:message for="passwordDiv" />
+
+				<b:commandButton update="@form mensajeAlerta" value="Ingresar"
+					action="#{loginController.login}" look="primary" />
+				<br />
+				<b:commandButton value="¿Olvido su contraseña?"
+					action="recuperarContrasena" immediate="true" />
+				<b:commandButton value="Registro" action="registrar" immediate="true" />
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!--
+<h:body style="padding-top: 60px; background-color: #add;">
+	<b:container>
+		<b:form styleClass="form-signin" prependId="false">
+			<h2 class="form-signin-heading">Please sign in</h2>
+			<b:inputText id="email" placeholder="Nro. Cédula" label="Nro. Cédula">
+				<f:facet name="prepend">
+					<b:icon name="user" />
+				</f:facet>
+			</b:inputText>
+			<b:inputText id="password" placeholder="Password" type="password"
+				label="Password">
+				<f:facet name="prepend">
+					<b:iconAwesome name="key" />
+				</f:facet>
+			</b:inputText>
+			<b:selectBooleanCheckbox value="true" caption="remember me" />
+			<b:commandButton look="primary btn-block" value="Sign In"
+				icon="log-in" size="lg" />
+
+<a class="btn btn-primary btn-lg" href="#recuperarContrasenaModal" data-toggle="modal">Recuperar Contraseña</a>
+			<b:modal id="recuperarContrasenaModal" title="Recuperación Contraseña" styleClass="modalRecuperarPassword"
+				closable="false" close-on-escape="false" backdrop="false">
+				<p>Por favor ingrese el número de cédula para que se envie un correo con su nueva clave.</p>
+				<b:inputText id="cedulaRecuperar" placeholder="Nro. Cédula" label="Nro. Cédula">
+				<f:facet name="prepend">
+					<b:icon name="user" />
+				</f:facet>
+				</b:inputText>
+				
+					<b:button value="Close" dismiss="modal" />
+					
+					<b:button value="Ok" look="primary" dismiss="modal" onclick="ajax:loginController.recuperarPassword()" />
+				
+			</b:modal>
+
+		</b:form>
+	</b:container>
+</h:body>-->
+</html>
