@@ -198,7 +198,7 @@
 				responsive="true">
 				<p:outputPanel id="pnlPartido" class="ui-fluid">
 					<p:panel rendered="#{marcadorCtrl.partidoSeleccionado != null}">
-						<p:panelGrid columns="3" layout="grid"
+						<p:panelGrid columns="#{marcadorCtrl.partidoSeleccionado.partido.etapa.penales ? 2 : 3}" layout="grid"
 							styleClass="showcase-text-align-center"
 							columnClasses="ui-g-4 ui-md-4, ui-g-4 ui-md-4, ui-g-4 ui-md-4">
 							<p:outputLabel id="lblPartido" value="Partido" />
