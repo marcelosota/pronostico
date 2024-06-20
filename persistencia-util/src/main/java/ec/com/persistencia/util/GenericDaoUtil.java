@@ -21,6 +21,8 @@ public class GenericDaoUtil {
 			boolean[] asc, String innerJoinObject, String innerJoinProperty,
 			Object innerJoinValue, CriteriaTypeEnum innerJoinOperator) {
 
+		int totalindiceParametroFecha = 1;
+		
 		int totalCriteriasOr = 0;
 		if (criteriasOr == null) {
 			hql.append(" 1=1 ");
@@ -116,11 +118,13 @@ public class GenericDaoUtil {
 						+ "");
 			}
 			if (typesOr[i].equals(CriteriaTypeEnum.DATE_BETWEEN)) {
-				hql.append("obj." + criteriasOr[i] + " between ? and ? ");
+				hql.append("obj." + criteriasOr[i] + " between ?"+totalindiceParametroFecha);
+				totalindiceParametroFecha++;
+				hql.append(" and ?"+totalindiceParametroFecha);
 				DateBetween dateBetween = (DateBetween) valuesCriteriaOr[i];
 				parameters.add(dateBetween.getFrom());
 				parameters.add(dateBetween.getTo());
-
+				totalindiceParametroFecha++;
 			}
 			if ((i + 1) != totalCriteriasOr) {
 				hql.append(" or ");
@@ -226,10 +230,13 @@ public class GenericDaoUtil {
 						+ "");
 			}
 			if (typesAnd[i].equals(CriteriaTypeEnum.DATE_BETWEEN)) {
-				hql.append("obj." + criteriasAnd[i] + " between ? and ? ");
+				hql.append("obj." + criteriasAnd[i] + " between ?"+totalindiceParametroFecha);
+				totalindiceParametroFecha++;
+				hql.append(" and ?" + totalindiceParametroFecha);
 				DateBetween dateBetween = (DateBetween) valuesCriteriaAnd[i];
 				parameters.add(dateBetween.getFrom());
 				parameters.add(dateBetween.getTo());
+				totalindiceParametroFecha++;
 
 			}
 		}

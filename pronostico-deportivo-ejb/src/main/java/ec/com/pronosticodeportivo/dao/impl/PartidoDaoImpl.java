@@ -45,7 +45,12 @@ public class PartidoDaoImpl extends GenericDaoEjb<Partido, Integer> implements P
 		
 		Object[] valuesCriteriaAnd = { fechaPub,fechaMaxReg };
 		
-		Criteria criteria = new Criteria(criteriasAnd, typesAnd, valuesCriteriaAnd);
+		String[] orderBy = { "fechaMaximaRegistro" };
+		
+		boolean[] ascDesc = { true };
+		
+		
+		Criteria criteria = new Criteria(criteriasAnd, typesAnd, valuesCriteriaAnd,orderBy,ascDesc);
 		return findByCriterias(criteria);
 	}
 
