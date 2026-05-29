@@ -15,6 +15,7 @@ import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Named(value = "principalCtrl")
 @ViewScoped
@@ -41,6 +42,8 @@ public class PrincipalCtrl implements Serializable {
 	@SuppressWarnings("unused")
 	private Usuario usuario;
 	private Sesion objSesion = new Sesion();
+	private Boolean permiso;
+	
 
 	/*
 				<p:menuitem value="Ingresar Resultados Oficiales" action="#{principalCtrl.resultadosOficiales()}" 
@@ -50,6 +53,11 @@ public class PrincipalCtrl implements Serializable {
 	@PostConstruct
 	public void init() {
 		System.out.println("Principal");
+		
+		if(objSesion.getCedula().equals("1714284856") || objSesion.getCedula().equals("1713407490"))
+			setPermiso(Boolean.TRUE);
+		else
+			setPermiso(Boolean.FALSE);
 	}
 
 	public String cerrarSesion() {
@@ -64,7 +72,6 @@ public class PrincipalCtrl implements Serializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//return "salir";
 	}
 	public void resultadosOficiales() {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
@@ -73,16 +80,31 @@ public class PrincipalCtrl implements Serializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//return "salir";
 	}
-	public void principal() {
+	public void notificaciones() {
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		try {
+			context.redirect(context.getRequestContextPath() + "/paginas/notificaciones.jsf");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public void registrarParticipantes() {
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		try {
+			context.redirect(context.getRequestContextPath() + "/paginas/registrarParticipantes.jsf");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public String principal() {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		try {
 			context.redirect(context.getRequestContextPath() + "/paginas/marcador.jsf");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//return "salir";
+		return null;
 	}
 
 	public Boolean getPresentarRegistroResultadosOficiales() {
@@ -90,6 +112,14 @@ public class PrincipalCtrl implements Serializable {
 			usuario=usuarioServicio.buscarUsuarioPorLogin(objSesion.getCedula());
 		}
 		return usuario.getLogin().equals("1714284856") || usuario.getLogin().equals("1713407490");
+	}
+
+	public Boolean getPermiso() {
+		return permiso;
+	}
+
+	public void setPermiso(Boolean permiso) {
+		this.permiso = permiso;
 	}
 
 

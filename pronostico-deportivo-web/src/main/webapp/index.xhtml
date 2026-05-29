@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -6,6 +6,7 @@
 	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
 
 <h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<link rel="stylesheet" href="resources/css/login.css" />
 	<title>Pronósticos Futboleros</title>
 	<link rel="shortcut icon"
@@ -14,40 +15,49 @@
 	<link rel="icon"
 		href="#{facesContext.externalContext.requestContextPath}/imagenes/icono_pronostico.ico"
 		type="image/x-icon" />
+	
 </h:head>
 <body>
 	<h:form id="login">
 		<p:growl id="mensajeAlerta" showDetail="true" sticky="true" />
 
-
-
 		<div class="container">
 			<div class="brand-logo">
 				<h:graphicImage value="/imagenes/logo_pronostico.jpg"
-					class="brand-logo" style="width: 100%;height: 100%" />
+					style="width: 100%; height: 100%; object-fit: cover; border-radius: 20%;" />
 			</div>
-			<div class="brand-title">PRONÓSTICOS COPA AMÉRICA</div>
+			<div class="brand-title">COPA MUNDIAL DE FÚTBOL 2026</div>
+			
 			<div class="inputs">
-				<p:outputLabel value="Cédula" />
-				<span class="ui-input-icon-left"> <i class="pi pi-user" /> <p:inputText
-						value="#{loginController.username}" placeholder="Número de Cédula"
-						requiredMessage="El campo Usuario es obligatorio" immediate="true" />
+				<p:outputLabel for="txtUsuario" value="Cédula" />
+				<span class="ui-input-icon-left  ancho-total"> 
+					<i class="pi pi-user" /> 
+					<p:inputText id="txtUsuario"
+						value="#{loginController.username}" 
+						placeholder="Número de Cédula"
+						requiredMessage="El campo Usuario es obligatorio" 
+						immediate="true"/>
 				</span>
 
-				<p:outputLabel value="Contraseña" />
-
-				<span class="ui-input-icon-left"> <i class="pi pi-key" /> <p:password
-						type="" value="#{loginController.password}"
+				<p:outputLabel for="txtContrasena" value="Contraseña" />
+				<span class="ui-input-icon-left ancho-total"> 
+					<i class="pi pi-key" /> 
+					<p:password id="txtContrasena"
+						value="#{loginController.password}"
 						placeholder="Contraseña"
 						requiredMessage="El campo Contraseña es obligatorio"
 						immediate="true" />
 				</span>
-				<p:commandButton id="btnConsultar" value="Ingresar" update="@form"
-					actionListener="#{loginController.login}"
-					icon="pi pi-chevron-right" action="#{loginController.login}">
+				<br/>
+				<p:commandButton id="btnConsultar" 
+					value="Ingresar" 
+					update="@form"
+					icon="pi pi-chevron-right" 
+					action="#{loginController.login}">
 				</p:commandButton>
 
-				<p:commandLink id="btnRecuperar" value="Recuperar contraseña"
+				<p:commandLink id="btnRecuperar" 
+					value="Recuperar contraseña"
 					onclick="PF('dlgContrasena').show()">
 				</p:commandLink>
 			</div>

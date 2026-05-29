@@ -16,7 +16,17 @@
 		href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
 </h:head>
 <h:body>
-	<h:form>
+	<p:megaMenu orientation="horizontal" autoDisplay="false">
+ 		<p:menuitem value="Principal" action="#{principalCtrl.principal}" />
+ 	</p:megaMenu>
+ 	<p:growl id="msgMensajes" 
+ 		showDetail="true" 
+ 		sticky="false"
+		keepAlive="false">
+		<p:autoUpdate />
+	</p:growl>
+ 	
+	<h:form id="formNotificacion">
 		<p:panel>
 			<p:panelGrid columns="2" layout="grid"
 				styleClass="showcase-text-align-center"
@@ -48,11 +58,16 @@
 						<h:outputText value="#{partido.pais}" />
 					</p:column>
 					<p:column headerText="Notificar" style="text-align: center;">
-						<p:commandButton id="btnEditar" process="@this" value="Notificar"
-							action="#{notificacionesCtrl.notificarPartido()}"
+						<p:commandButton id="btnEditar" 
+							process="@this" 
+							value="Notificar"
+							action="#{notificacionesCtrl.notificarPartido}"
 							styleClass="edit-button rounded-button ui-button-success"
-							immediate="true" rendered="#{!partido.notificado}" update="@form">
-							<f:setPropertyActionListener value="#{partido}" for="dtbPartido"
+							immediate="true" 
+							rendered="#{!partido.notificado}" 
+							update="@form msgMensajes">
+							<f:setPropertyActionListener value="#{partido}" 
+								for="dtbPartido"
 								target="#{notificacionesCtrl.partidoSeleccionado}" />
 						</p:commandButton>
 					</p:column>

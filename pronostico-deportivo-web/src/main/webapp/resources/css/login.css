@@ -50,36 +50,41 @@ input {
 
 body {
   margin: 0;
-  width: 100vw;
-  height: 100vh;
+  padding: 10px;
+  min-height: 100vh;
+  /*width: 100vw;
+  height: 100vh;*/
   background: #ecf0f3;
   display: flex;
   align-items: center;
-  text-align: center;
   justify-content: center;
+  /*text-align: center;
   place-items: center;
-  overflow: hidden;
-  font-family: poppins;
+  overflow: hidden;*/
+  font-family: 'Poppins', sans-serif;
 }
 
 .container {
   position: relative;
-  width: 350px;
-  height: 500px;
+  width: 100%;
+  max-width: 390px;
+  min-height: 550px;
   border-radius: 20px;
-  padding: 40px;
+  padding: 30px 20px;
   box-sizing: border-box;
   background: #ecf0f3;
   box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+  margin: 20px auto;
 }
 
 .brand-logo {
   height: 100px;
   width: 100px;
-  margin: auto;
+  object-fit: cover;
   border-radius: 20%;
-  box-sizing: border-box;
-  box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;
+  margin: auto;
+  /*box-sizing: border-box;
+  box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;*/
 }
 
 .brand-title {
@@ -90,9 +95,16 @@ body {
   letter-spacing: 1px;
 }
 
-.inputs {
+/*.inputs {
   text-align: left;
   margin-top: 30px;
+}*/
+
+.inputs .ancho-total {
+  display: block !important;
+  width: 100% !important;
+  position: relative;
+  margin-bottom: 15px;
 }
 
 label, input, button {

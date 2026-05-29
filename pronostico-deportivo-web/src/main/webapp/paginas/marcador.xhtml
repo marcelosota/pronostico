@@ -1,12 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!DOCTYPE html>
+<!--  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" -->
 
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<!--xmlns:b="http://bootsfaces.net/ui"-->
+
 <f:view contentType="text/html" encoding="UTF-8">
 	<h:head>
 		<title>Pronóstico Deportivo</title>
@@ -20,21 +20,17 @@
 			href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css" />
 	</h:head>
 	<h:body>
-		<!--<ui:composition template="../templates/layout.xhtml">
-		<ui:define name="pageTitle">Pronósticos Deportivos</ui:define>
-		<ui:define name="pageContent" bootsFacesDecorator="true">-->
 
-		<p:megaMenu orientation="horizontal" autoDisplay="false">
-			<p:menuitem value="Principal" action="#{principalCtrl.principal()}" />
-			<p:menuitem value="Cambiar Contraseña"
-				action="#{principalCtrl.cambiarPassword()}" />
-			<p:menuitem value="Ingresar Resultados Oficiales"
-				action="#{principalCtrl.resultadosOficiales()}"
-				rendered="#{principalCtrl.presentarRegistroResultadosOficiales}" />
-			<p:menuitem value="Salir" action="#{principalCtrl.cerrarSesion()}"
-				immediate="true" />
 
-		</p:megaMenu>
+		<p:menubar autoDisplay="false">
+		    <p:menuitem value="Principal" action="#{principalCtrl.principal}" icon="pi pi-home" />
+		    <p:menuitem value="Cambiar Contraseña" action="#{principalCtrl.cambiarPassword}" icon="pi pi-key" />
+		    <p:menuitem value="Resultados Oficiales" action="#{principalCtrl.resultadosOficiales}" rendered="#{principalCtrl.permiso}" icon="pi pi-chart-bar" />
+		    <p:menuitem value="Enviar Notificaciones" action="#{principalCtrl.notificaciones}" rendered="#{principalCtrl.permiso}" icon="pi pi-bell" />
+		    <p:menuitem value="Participantes" action="#{principalCtrl.registrarParticipantes}" rendered="#{principalCtrl.permiso}" icon="pi pi-users" />
+		    <p:menuitem value="Salir" action="#{principalCtrl.cerrarSesion}" immediate="true" icon="pi pi-sign-out" />
+		</p:menubar>
+		
 		<p:growl id="msgMensajes" showDetail="true" sticky="false"
 			keepAlive="false">
 			<p:autoUpdate />
@@ -42,13 +38,18 @@
 
 		<h:form id="formMarcador">
 			<p:panel>
-				<p:panelGrid columns="2" layout="grid"
+				<p:panelGrid columns="2" 
+					layout="grid"
 					styleClass="showcase-text-align-center"
 					columnClasses="ui-g-12 ui-md-6, ui-g-12 ui-md-6">
-					<p:dataTable id="dtbPartido" reflow="true" widgetVar="dtPartido"
-						value="#{marcadorCtrl.listaPartido}" var="pronostico"
+					<p:dataTable id="dtbPartido" 
+						reflow="true" 
+						widgetVar="dtPartido"
+						value="#{marcadorCtrl.listaPartido}" 
+						var="pronostico"
 						rowKey="#{pronostico.partido.partidoId}"
-						selection="#{marcador.partidoSeleccionado}" rowSelectMode="add">
+						selection="#{marcador.partidoSeleccionado}" 
+						rowSelectMode="add">
 						<f:facet name="header">
 							<h:outputText value="Partidos de la fecha" />
 						</f:facet>
@@ -61,25 +62,12 @@
 								style="width: 30px; height: 20px"></span>
 							<h:outputText value=" #{pronostico.partido.equipo1.siglas}" />
 						</p:column>
-						<!-- 							<p:column headerText="Marcador Local"
-								style="background-color: #BEF763;">
-								<h:outputText value="#{pronostico.partido.marcadorLocal}" />
-								<h:outputText rendered="#{pronostico.partido.posiblesPenales}"
-									value=" (#{pronostico.partido.penalesLocal})" />
-							</p:column>
- -->
 						<p:column headerText="Pronóstico Local"
 							style="background-color: #BEF763;">
 							<h:outputText value="#{pronostico.local}" />
 							<h:outputText rendered="#{pronostico.partido.posiblesPenales}"
 								value=" (#{pronostico.penalesLocal})" />
 						</p:column>
-						<!-- <p:column headerText="Marcador Visita"
-								style="background-color: #F3E2B2;">
-								<h:outputText value="#{pronostico.partido.marcadorVisitante}" />
-								<h:outputText rendered="#{pronostico.partido.posiblesPenales}}"
-									value=" (#{pronostico.partido.penalesVisitante})" />
-							</p:column> -->
 						<p:column headerText="Pronóstico Visita"
 							style="background-color: #F3E2B2;">
 							<h:outputText value="#{pronostico.visitante}" />
@@ -96,20 +84,29 @@
 							<h:outputText value="#{pronostico.partido.pais}" />
 						</p:column>
 						<p:column headerText="Pronóstico" style="text-align: center;">
-							<p:commandButton id="btnEditar" process="@this"
+							<p:commandButton id="btnEditar" 
+								process="@this"
 								action="#{marcadorCtrl.registroSeleccionado()}"
 								oncomplete="PF('editarPartidoDialog').show()"
 								icon="pi pi-pencil"
 								styleClass="edit-button rounded-button ui-button-success"
-								update=":formDialogo:pnlPartido" immediate="true">
+								update=":formDialogo:pnlPartido" 
+								immediate="true">
 								<f:setPropertyActionListener value="#{pronostico}"
-									for="dtbPartido" target="#{marcadorCtrl.partidoSeleccionado}" />
+									for="dtbPartido" 
+									target="#{marcadorCtrl.partidoSeleccionado}" />
 							</p:commandButton>
 						</p:column>
 					</p:dataTable>
-					<p:dataTable id="dtbPosiciones" reflow="true"
-						value="#{marcadorCtrl.listaParticipantes}" var="participante"
-						rows="10" paginator="true" paginatorPosition="bottom">
+					
+					<p:dataTable id="dtbPosiciones" 
+						reflow="true"
+						value="#{marcadorCtrl.listaParticipantes}" 
+						var="participante"
+						rows="5" 
+						paginator="true" 
+						paginatorPosition="bottom"
+						rowsPerPageTemplate="5,10,20">
 						<f:facet name="header">
 							<h:outputText value="Tabla de posiciones" />
 						</f:facet>
@@ -131,19 +128,27 @@
 					</p:dataTable>
 				</p:panelGrid>
 			</p:panel>
+			
 			<p:panel>
-				<!--b:row styleClass="show-grid">
-						<b:column col-xs="12"-->
-				<p:dataTable id="dtbPronostico" reflow="true"
-					value="#{marcadorCtrl.listaPronostico}" var="pronostico">
-					<p:column headerText="Partido" style="background-color: #BEA772;">
+				<p:dataTable id="dtbPronostico" 
+					reflow="true"
+					value="#{marcadorCtrl.listaPronostico}" 
+					var="pronostico"
+					paginator="true"
+					paginatorPosition="bottom"
+					rows="10"
+					rowsPerPageTemplate="5,10,20">
+					<p:column headerText="Partido" 
+						style="background-color: #BEA772;">
 						<span class="fi fi-#{pronostico.banderaLocal}"
-							style="width: 30px; height: 20px"></span>
+							style="width: 30px; height: 20px">
+						</span>
 						<h:outputText value=" #{pronostico.local} - " />
 
 						<h:outputText value="#{pronostico.visitante} " />
 						<span class="fi fi-#{pronostico.banderaVisitante}"
-							style="width: 30px; height: 20px"></span>
+							style="width: 30px; height: 20px">
+						</span>
 
 						<h:outputText
 							value="#{pronostico.posiblesPenales ? '   (Penales)' : ''}"
@@ -193,12 +198,16 @@
 		</h:form>
 
 		<h:form id="formDialogo">
-			<p:dialog id="editarPartido" header="Pronóstico del partido"
-				showEffect="fade" modal="true" widgetVar="editarPartidoDialog"
+			<p:dialog id="editarPartido" 
+				header="Pronóstico del partido"
+				showEffect="fade" 
+				modal="true" 
+				widgetVar="editarPartidoDialog"
 				responsive="true">
 				<p:outputPanel id="pnlPartido" class="ui-fluid">
 					<p:panel rendered="#{marcadorCtrl.partidoSeleccionado != null}">
-						<p:panelGrid columns="#{!marcadorCtrl.partidoSeleccionado.partido.etapa.penales ? 2 : 3}" layout="grid"
+						<p:panelGrid columns="#{!marcadorCtrl.partidoSeleccionado.partido.etapa.penales ? 2 : 3}" 
+							layout="grid"
 							styleClass="showcase-text-align-center"
 							columnClasses="ui-g-4 ui-md-4, ui-g-4 ui-md-4, ui-g-4 ui-md-4">
 							<p:outputLabel id="lblPartido" value="Partido" />
@@ -215,12 +224,14 @@
 							<p:inputText
 								id="txtMarcadorLocal"
 								value="#{marcadorCtrl.partidoSeleccionado.local}"
-								size="1" maxlength="2">
+								size="1" 
+								maxlength="2">
 								<p:ajax event="change" update="txtPenalesLocal txtPenalesVisita"></p:ajax>
 							</p:inputText>
 							<p:inputText id="txtPenalesLocal"
 								value="#{marcadorCtrl.partidoSeleccionado.penalesLocal}"
-								size="1" maxlength="2"
+								size="1" 
+								maxlength="2"
 								rendered="#{marcadorCtrl.partidoSeleccionado.partido.etapa.penales}"
 								disabled="#{marcadorCtrl.partidoSeleccionado.local != null and  marcadorCtrl.partidoSeleccionado.visitante != null and marcadorCtrl.partidoSeleccionado.local eq marcadorCtrl.partidoSeleccionado.visitante ? false : true}" />
 							<h:panelGroup>
@@ -232,25 +243,31 @@
 							</h:panelGroup>
 							<p:inputText id="txtMarcadorVisita"
 								value="#{marcadorCtrl.partidoSeleccionado.visitante}"
-								size="1" maxlength="2">
+								size="1" 
+								maxlength="2">
 								<p:ajax event="change" update="txtPenalesLocal txtPenalesVisita"></p:ajax>
 							</p:inputText>
 							<p:inputText id="txtPenalesVisita"
 								value="#{marcadorCtrl.partidoSeleccionado.penalesVisitante}"
-								size="1" maxlength="2"
+								size="1" 
+								maxlength="2"
 								rendered="#{marcadorCtrl.partidoSeleccionado.partido.etapa.penales}"
 								disabled="#{marcadorCtrl.partidoSeleccionado.local != null and  marcadorCtrl.partidoSeleccionado.visitante != null and marcadorCtrl.partidoSeleccionado.local eq marcadorCtrl.partidoSeleccionado.visitante ? false : true}" />
 						</p:panelGrid>
 					</p:panel>
 				</p:outputPanel>
 				<f:facet name="footer">
-					<p:commandButton value="Guardar" icon="pi pi-check"
+					<p:commandButton value="Guardar" 
+						icon="pi pi-check"
 						actionListener="#{marcadorCtrl.guardarPronostico}"
-						update="pnlPartido formMarcador" process="pnlPartido @this"
+						update="pnlPartido formMarcador" 
+						process="pnlPartido @this"
 						oncomplete="PF('editarPartidoDialog').hide()" />
-					<p:commandButton value="Cancelar" icon="pi pi-times"
+					<p:commandButton value="Cancelar" 
+						icon="pi pi-times"
 						onclick="PF('editarPartidoDialog').hide()"
-						class="ui-button-secondary" type="button" />
+						class="ui-button-secondary" 
+						type="button" />
 				</f:facet>
 			</p:dialog>
 		</h:form>

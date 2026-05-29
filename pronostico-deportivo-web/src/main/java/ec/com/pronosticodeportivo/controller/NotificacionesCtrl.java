@@ -14,6 +14,8 @@ import ec.com.pronosticodeportivo.servicios.PartidoServicio;
 import ec.com.pronosticodeportivo.util.CorreoElectronico;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 
@@ -43,19 +45,27 @@ public class NotificacionesCtrl implements Serializable{
 	
 	@PostConstruct
 	protected void init() {
-		
+		//Verifica si existe algún partido a jugarse que este en el intervalo de [-5;5] respecto de la fecha actual
 		List<Partido> listaPartidos = partidoDao.getPartidoNotificacion();
-		for(Partido partido : listaPartidos) {
-			partidoSeleccionado = partido;
-			notificarPartido();
-		}
+		if(listaPartidos != null && listaPartidos.size() > 0)
+			for(Partido partido : listaPartidos) {
+				partidoSeleccionado = partido;
+				notificarPartido();
+			}
 		listaPartido = new ArrayList<>();
 		listaPartido = partidoDao.getPartidosPendientes();
 	}
 	
 	public void notificarPartido() {
 		List<VwPartidosPronosticosUsuario> lista = vwPronostico.getPronosticos(partidoSeleccionado.getPartidoId());
-		
+		if(lista == null || lista.size() == 0) {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
+				"No se pudo enviar la notificación para el partido " + 
+				partidoSeleccionado.getEquipo1().getSiglas() +
+				" -  "+ partidoSeleccionado.getEquipo2().getSiglas());
+			FacesContext.getCurrentInstance().addMessage("formNotificacion:msgMensaje", msg);
+			return;
+		}
 		List<Integer> destinatarios = new ArrayList<>();
 		StringBuilder tabla = new StringBuilder("<table style=\"border:2px solid black;border-collapse:collapse;\">");
 		tabla.append("		<tr style=\"background-color:#045FB4;color:white;border:2px solid black;border-collapse:collapse;\">");
@@ -112,6 +122,10 @@ public class NotificacionesCtrl implements Serializable{
 					tabla.toString());
 			partidoSeleccionado.setNotificado(Boolean.TRUE);
 			partidoServicio.update(partidoSeleccionado);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
+					"Se ha noificado los pronósticos del partido " + 
+					partidoSeleccionado.getEquipo1().getSiglas() + " -  "+ partidoSeleccionado.getEquipo2().getSiglas());
+			FacesContext.getCurrentInstance().addMessage("formNotificacion:msgMensaje", msg);
 		}
 		
 	}

@@ -10,11 +10,8 @@
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
 			<property name="hibernate.default_schema" value="futbol" />
-			<property name="hibernate.dialect"
-				value="org.hibernate.dialect.PostgreSQLDialect" />
-			<property name="hibernate.archive.autodetection"
-				value="class, hbm" />
-
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.archive.autodetection" value="class, hbm" />
 			<property name="hibernate.jdbc.time_zone" value="UTC" />
 		</properties>
 	</persistence-unit>
