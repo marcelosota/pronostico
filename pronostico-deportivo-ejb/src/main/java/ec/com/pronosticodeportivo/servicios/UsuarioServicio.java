@@ -21,4 +21,6 @@ public interface UsuarioServicio extends GenericService<Usuario, Integer> {
 	public Usuario buscarUsuarioPorLogin( String username);
 
 	public void recuperarContrasena(String usuarioRecuperar);
+	
+	public String generarContrasena();
 }

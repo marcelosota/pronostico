@@ -17,8 +17,6 @@ import ec.com.persistencia.servicio.impl.GenericServiceImpl;
 import ec.com.pronosticodeportivo.dao.UsuarioDao;
 import ec.com.pronosticodeportivo.modelo.Usuario;
 import ec.com.pronosticodeportivo.servicios.UsuarioServicio;
-import ec.com.pronosticodeportivo.util.Correo;
-import ec.com.pronosticodeportivo.util.Mensaje;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 
@@ -71,26 +69,31 @@ public class UsuarioServicioImpl extends GenericServiceImpl<Usuario, Integer> im
 
 	@Override
 	public void recuperarContrasena(String usuarioRecuperar) {
-		String nuevaClave=generarContrasena();
+		
 		Usuario cambioClave=buscarUsuarioPorLogin(usuarioRecuperar);
-		cambioClave.setContrasena(encriptarContrasena(nuevaClave));
+		if(cambioClave != null) {
+			String nuevaClave=generarContrasena();
+			cambioClave.setContrasena(encriptarContrasena(nuevaClave));
 		
-		String asunto = "Recuperación contraseña";
-		String textoMensaje = "Se ha generado automáticamente un nueva contraseña. Los nuevos datos de acceso son:<br/>Usuario:"+usuarioRecuperar+" <br/>Contraseña:"+nuevaClave;
+			String asunto = "Recuperación contraseña";
+			StringBuilder textoMensaje = new StringBuilder("hola ").append(cambioClave.getNombre()) 
+				.append("Se ha generado automáticamente un nueva contraseña. Los nuevos datos de acceso son:<br/>")
+				.append("<b>Usuario: </b>").append(usuarioRecuperar)
+				.append("<br/><b>Contraseña: </b>").append(nuevaClave);
 		
-		List<String> to=new ArrayList<String>();
-		
-		to.add(cambioClave.getEmail());
-		
-		Mensaje mensaje=new Mensaje();
+			List<String> to=new ArrayList<String>();
+			to.add(cambioClave.getEmail());
+
+		/*Mensaje mensaje=new Mensaje();
 		mensaje.setAsunto(asunto);
-		mensaje.setTextoMensaje(textoMensaje);
+		mensaje.setTextoMensaje(textoMensaje.toString());
 		mensaje.setDestinatarios(to);
 		mensaje.setRemitente("pronosticos@pronosticos.com");
 		mensaje.setTieneAdjunto(false);
 		update(cambioClave);
 		Correo correo= new Correo();
-		correo.enviarCorreo(mensaje);
+		correo.enviarCorreo(mensaje);*/
+		}
 		
 	}
 	

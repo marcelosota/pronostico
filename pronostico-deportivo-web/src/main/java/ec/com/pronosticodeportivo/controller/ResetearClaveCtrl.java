@@ -55,20 +55,21 @@ public class ResetearClaveCtrl implements Serializable {
 	@SuppressWarnings("unused")
 	public void cambiarClave() {
 		if(usuarioServicio.encriptarContrasena(claveAnterior).equals(usuarioModificacion.getContrasena())) {
-		if (nuevaClave.equals(nuevaClaveConfirmacion)) {
-			usuarioModificacion.setContrasena(usuarioServicio.encriptarContrasena(nuevaClave));
-			usuarioServicio.update(usuarioModificacion);
-			objSesion.cerrarSession();
-			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-			try {
-				context.redirect(context.getRequestContextPath());
-			} catch (IOException e) {
-				e.printStackTrace();
+			if (nuevaClave.equals(nuevaClaveConfirmacion)) {
+				usuarioModificacion.setContrasena(usuarioServicio.encriptarContrasena(nuevaClave));
+				usuarioServicio.update(usuarioModificacion);
+				objSesion.cerrarSession();
+				ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+				try {
+					context.redirect(context.getRequestContextPath()+"/paginas/marcador.jsf");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else {
+				FacesContext.getCurrentInstance().
+	            addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Cambio Clave", "Nueva Clave y Confirmación deben ser iguales.")); 
 			}
 		}else {
-			FacesContext.getCurrentInstance().
-            addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Cambio Clave", "Nueva Clave y Confirmación deben ser iguales.")); 
-		}}else {
 			FacesContext.getCurrentInstance().
             addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Cambio Clave", "Clave Actual Incorrecta.")); 
 			

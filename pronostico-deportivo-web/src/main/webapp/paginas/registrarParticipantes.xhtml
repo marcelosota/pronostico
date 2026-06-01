@@ -44,38 +44,53 @@
 							rowSelectMode="add"
 							rows="8"
 							paginator="true"
-							paginatorPosition="bottom">
+							paginatorPosition="bottom"
+							globalFilterOnly="#{registrarParticipanteCtrl.filtroGlobal}"
+							filteredValue="#{registrarParticipanteCtrl.filtrarUsuario}">
 							<f:facet name="header">
 								<h:outputText value="Participantes" />
+								<div>
+									<p:inputText id="globalFilter" 
+										onkeyup="PrimeFaces.debounce(() => PF('dtParticipante').filter())" 
+										style="width:10rem"
+										placeholder="parámetro de búsqueda" />
+									<p:spacer width="5px" />
+									<p:commandButton value="Buscar Participante" 
+										update="@form" 
+										styleClass="ml-2"
+										action="#{registrarParticipanteCtrl.toggleGlobalFilter}"/>
+								</div>
 							</f:facet>
-							<p:column headerText="Número de identificación">
+							<p:column headerText="Número de identificación" filterBy="#{usu.login}" filterMatchMode="contains">
 								<h:outputText value="#{usu.login}" />
 							</p:column>
-							<p:column headerText="Nombre">
+							<p:column headerText="Nombre" filterBy="#{usu.nombre}" filterMatchMode="contains">
 								<h:outputText value=" #{usu.nombre}" />
 							</p:column>						
-							<p:column headerText="Apellido">
+							<p:column headerText="Apellido" filterBy="#{usu.apellido}" filterMatchMode="contains">
 								<h:outputText  value="#{usu.apellido}" />
 							</p:column>
 							<p:column headerText="Teléfono">
 								<h:outputText value="#{usu.telefono}" />
 							</p:column>
-							<p:column headerText="Correo Electrónico">							
+							<p:column headerText="Correo Electrónico" filterBy="#{usu.email}" filterMatchMode="contains">							
 								<h:outputText value="#{usu.email} "/>
 							</p:column>
-							<p:column headerText="Estado">
+							<p:column headerText="Estado" filterBy="#{usu.estado}" filterMatchMode="exact">
 								<h:outputText value="#{usu.estado eq 'A' ? 'Activo' : 'Inactivo'}" />
 							</p:column>
 							<p:column headerText="Acciones" style="text-align: center;">
 								<p:commandButton id="btnEditar" 
 									process="@this"
-									action="#{registrarParticipanteCtrl.registroSeleccionado()}"
+									action="#{registrarParticipanteCtrl.registroSeleccionado}"
 									oncomplete="PF('editarParticipanteDialog').show()"
 									icon="pi pi-pencil"
 	                                styleClass="edit-button rounded-button ui-button-success"
 	                                update=":formDialogo:pnlParticipante"
 	                                immediate="true">
-		                            <f:setPropertyActionListener value="#{usu}" for="dtbParticipante" target="#{registrarParticipanteCtrl.usuarioSeleccionado}"/>
+		                            <f:setPropertyActionListener value="#{usu}" 
+		                            	for="dtbParticipante" 
+		                            	target="#{registrarParticipanteCtrl.usuarioSeleccionado}"/>
 		                        </p:commandButton>
 							</p:column>
 						</p:dataTable>
@@ -92,31 +107,44 @@
 								styleClass="showcase-text-align-center" 
 								columnClasses="ui-g-12 ui-md-6">
 								<p:outputLabel for="txtLogin" value="Número de identificación" />
-								<p:inputText id="txtLogin" value="#{registrarParticipanteCtrl.usuarioSeleccionado.login}" 
-									required="true" size="15" maxlength="10" />
+								<p:inputText id="txtLogin" 
+									value="#{registrarParticipanteCtrl.usuarioSeleccionado.login}" 
+									required="true" 
+									size="15" 
+									maxlength="10" />
 								
 								<p:outputLabel for="txtNombre" value="Nombre" />
-								<p:inputText id="txtNombre" value="#{registrarParticipanteCtrl.usuarioSeleccionado.nombre}"
-									required="true" size="40" />
+								<p:inputText id="txtNombre" 
+									value="#{registrarParticipanteCtrl.usuarioSeleccionado.nombre}"
+									required="true" 
+									size="40" />
 								
 								<p:outputLabel for="txtApellido" value="Apellido" />
-								<p:inputText id="txtApellido" value="#{registrarParticipanteCtrl.usuarioSeleccionado.apellido}"
-									required="true" size="40" />
+								<p:inputText id="txtApellido" 
+									value="#{registrarParticipanteCtrl.usuarioSeleccionado.apellido}"
+									required="true" 
+									size="40" />
 									
 								<p:outputLabel for="txtTelefono" value="Teléfono" />
-								<p:inputText id="txtTelefono" value="#{registrarParticipanteCtrl.usuarioSeleccionado.telefono}"
-									required="true" size="15" />
+								<p:inputText id="txtTelefono" 
+									value="#{registrarParticipanteCtrl.usuarioSeleccionado.telefono}"
+									required="true" 
+									size="15" />
 									
 								<p:outputLabel for="txtEmail" value="Correo electrónico" />
-								<p:inputText id="txtEmail" value="#{registrarParticipanteCtrl.usuarioSeleccionado.email}"
-									required="true" size="80" />
+								<p:inputText id="txtEmail" 
+									value="#{registrarParticipanteCtrl.usuarioSeleccionado.email}"
+									required="true" 
+									size="80" />
 									
 								<p:outputLabel for="txtContrasena" value="Contraseña" />
-								<p:password id="txtContrasena" value="#{registrarParticipanteCtrl.usuarioSeleccionado.contrasena}"
+								<p:password id="txtContrasena" 
+									value="#{registrarParticipanteCtrl.usuarioSeleccionado.contrasena}"
 									size="40" />
 								
 								<p:outputLabel for="txtEstado" value="Estado" />
-								<p:selectOneMenu id="txtEstado" value="#{registrarParticipanteCtrl.usuarioSeleccionado.estado}" 
+								<p:selectOneMenu id="txtEstado" 
+									value="#{registrarParticipanteCtrl.usuarioSeleccionado.estado}" 
 									required="true">
 									<f:selectItem itemLabel="Activo" itemValue="A"/>
 									<f:selectItem itemLabel="Inactivo" itemValue="I"/>
@@ -126,11 +154,17 @@
 						</p:panel>
 					</p:outputPanel>
 					<f:facet name="footer">
-		                <p:commandButton value="Guardar" icon="pi pi-check" 
-		                	actionListener="#{registrarParticipanteCtrl.guardarUsuario()}"
-		                    update="pnlParticipante formParticipante" process="pnlParticipante @this" oncomplete="PF('editarParticipanteDialog').hide()" />
-		                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('editarParticipanteDialog').hide()"
-		                    class="ui-button-secondary" type="button" />
+		                <p:commandButton value="Guardar" 
+		                	icon="pi pi-check" 
+		                	actionListener="#{registrarParticipanteCtrl.guardarUsuario}"
+		                    update="pnlParticipante formParticipante" 
+		                    process="pnlParticipante @this" 
+		                    oncomplete="PF('editarParticipanteDialog').hide()" />
+		                <p:commandButton value="Cancelar" 
+		                	icon="pi pi-times" 
+		                	onclick="PF('editarParticipanteDialog').hide()"
+		                    class="ui-button-secondary" 
+		                    type="button" />
 		            </f:facet>
 				</p:dialog>
 			</h:form>
