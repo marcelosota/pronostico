@@ -6,8 +6,6 @@ import java.io.Serializable;
 import ec.com.pronosticodeportivo.modelo.Usuario;
 import ec.com.pronosticodeportivo.servicios.PartidoServicio;
 import ec.com.pronosticodeportivo.servicios.UsuarioServicio;
-import ec.com.pronosticodeportivo.servicios.VwListaPartidoServicio;
-import ec.com.pronosticodeportivo.servicios.VwPartidosPronosticosUsuarioServicio;
 import ec.com.pronosticodeportivo.session.Sesion;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
@@ -15,7 +13,6 @@ import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
-import jakarta.servlet.http.HttpServletRequest;
 
 @Named(value = "principalCtrl")
 @ViewScoped
@@ -25,8 +22,8 @@ public class PrincipalCtrl implements Serializable {
 	 * 
 	 */
 
-	@EJB
-	private VwListaPartidoServicio vwListaPartidoServicio;
+//	@EJB
+//	private VwListaPartidoServicio vwListaPartidoServicio;
 
 	@EJB
 	private PartidoServicio partidoServicio;
@@ -34,8 +31,8 @@ public class PrincipalCtrl implements Serializable {
 	@EJB
 	private UsuarioServicio usuarioServicio;
 
-	@EJB
-	private VwPartidosPronosticosUsuarioServicio vwPronosticoServicio;
+//	@EJB
+//	private VwPartidosPronosticosUsuarioServicio vwPronosticoServicio;
 
 	private static final long serialVersionUID = 7058602135192992714L;
 
@@ -45,11 +42,6 @@ public class PrincipalCtrl implements Serializable {
 	private Boolean permiso;
 	
 
-	/*
-				<p:menuitem value="Ingresar Resultados Oficiales" action="#{principalCtrl.resultadosOficiales()}" 
-				rendered="#{principalCtrl.presentarRegistroResultadosOficiales}" />
-				<p:menuitem value="Salir" action="#{principalCtrl.cerrarSesion()}" />
-*/
 	@PostConstruct
 	public void init() {
 		System.out.println("Principal");
@@ -60,9 +52,14 @@ public class PrincipalCtrl implements Serializable {
 			setPermiso(Boolean.FALSE);
 	}
 
-	public String cerrarSesion() {
+	public void cerrarSesion() {
 		objSesion.cerrarSession();
-		return "salir";
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		try {
+			context.redirect(context.getRequestContextPath() + "/index.jsf");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void cambiarPassword() {

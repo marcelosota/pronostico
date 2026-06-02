@@ -29,7 +29,7 @@
 	                 columnClasses="ui-g-12 ui-md-12">
 	                 	<p:commandButton id="btnNuevo" 
 	                 		value="Nuevo Participante" 
-	                 		action="#{registrarParticipanteCtrl.nuevoParticipante()}"
+	                 		action="#{registrarParticipanteCtrl.nuevoParticipante}"
 	                 		oncomplete="PF('editarParticipanteDialog').show()"
 	                 		update=":formDialogo:pnlParticipante"
 	                 		class="ui-button-primary" />
@@ -44,7 +44,7 @@
 							rowSelectMode="add"
 							rows="8"
 							paginator="true"
-							paginatorPosition="bottom"
+							paginatorPosition="both"
 							globalFilterOnly="#{registrarParticipanteCtrl.filtroGlobal}"
 							filteredValue="#{registrarParticipanteCtrl.filtrarUsuario}">
 							<f:facet name="header">
@@ -99,11 +99,17 @@
 			</h:form>
 			
 			<h:form id="formDialogo">
-				<p:dialog id="editarParticipante" header="Participantes" showEffect="fade" modal="true" 
-					widgetVar="editarParticipanteDialog" responsive="true">
+				<p:dialog id="editarParticipante" 
+					header="Participantes" 
+					showEffect="fade" 
+					modal="true" 
+					widgetVar="editarParticipanteDialog" 
+					responsive="true"
+					fitViewport="true">
 					<p:outputPanel id="pnlParticipante" class="ui-fluid">
 						<p:panel>
-							<p:panelGrid columns="1" layout="grid" 
+							<p:panelGrid columns="1" 
+								layout="grid" 
 								styleClass="showcase-text-align-center" 
 								columnClasses="ui-g-12 ui-md-6">
 								<p:outputLabel for="txtLogin" value="Número de identificación" />
@@ -117,13 +123,13 @@
 								<p:inputText id="txtNombre" 
 									value="#{registrarParticipanteCtrl.usuarioSeleccionado.nombre}"
 									required="true" 
-									size="40" />
+									size="20" />
 								
 								<p:outputLabel for="txtApellido" value="Apellido" />
 								<p:inputText id="txtApellido" 
 									value="#{registrarParticipanteCtrl.usuarioSeleccionado.apellido}"
 									required="true" 
-									size="40" />
+									size="20" />
 									
 								<p:outputLabel for="txtTelefono" value="Teléfono" />
 								<p:inputText id="txtTelefono" 
@@ -135,17 +141,18 @@
 								<p:inputText id="txtEmail" 
 									value="#{registrarParticipanteCtrl.usuarioSeleccionado.email}"
 									required="true" 
-									size="80" />
+									size="20" />
 									
 								<p:outputLabel for="txtContrasena" value="Contraseña" />
 								<p:password id="txtContrasena" 
 									value="#{registrarParticipanteCtrl.usuarioSeleccionado.contrasena}"
-									size="40" />
+									size="20" />
 								
 								<p:outputLabel for="txtEstado" value="Estado" />
 								<p:selectOneMenu id="txtEstado" 
 									value="#{registrarParticipanteCtrl.usuarioSeleccionado.estado}" 
-									required="true">
+									required="true"
+									style="width: 15;">
 									<f:selectItem itemLabel="Activo" itemValue="A"/>
 									<f:selectItem itemLabel="Inactivo" itemValue="I"/>
 								</p:selectOneMenu>
