@@ -49,16 +49,17 @@ public class ResetearClaveCtrl implements Serializable {
 	protected void init() {
 		if (objSesion.getCedula() != null && objSesion.getNombre() != null) {
 			usuarioModificacion=usuarioServicio.buscarUsuarioPorLogin(objSesion.getCedula());
+			System.out.println("Usuario cargado: " + usuarioModificacion.getEstado());
 		}
-		
 	}
+		
 	@SuppressWarnings("unused")
 	public void cambiarClave() {
 		if(usuarioServicio.encriptarContrasena(claveAnterior).equals(usuarioModificacion.getContrasena())) {
 			if (nuevaClave.equals(nuevaClaveConfirmacion)) {
 				usuarioModificacion.setContrasena(usuarioServicio.encriptarContrasena(nuevaClave));
 				usuarioServicio.update(usuarioModificacion);
-				objSesion.cerrarSession();
+				//objSesion.cerrarSession();
 				ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 				try {
 					context.redirect(context.getRequestContextPath()+"/paginas/marcador.jsf");

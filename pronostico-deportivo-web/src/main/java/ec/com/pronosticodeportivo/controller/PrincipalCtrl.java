@@ -45,11 +45,13 @@ public class PrincipalCtrl implements Serializable {
 	@PostConstruct
 	public void init() {
 		System.out.println("Principal");
-		
-		if(objSesion.getCedula().equals("1714284856") || objSesion.getCedula().equals("1713407490"))
-			setPermiso(Boolean.TRUE);
-		else
-			setPermiso(Boolean.FALSE);
+		if(objSesion != null) {
+			if(objSesion.getCedula().equals("1714284856") || objSesion.getCedula().equals("1713407490"))
+				setPermiso(Boolean.TRUE);
+			else
+				setPermiso(Boolean.FALSE);
+		}else
+			cerrarSesion();
 	}
 
 	public void cerrarSesion() {

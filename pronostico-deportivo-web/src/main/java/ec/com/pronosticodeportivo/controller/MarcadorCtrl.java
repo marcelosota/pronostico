@@ -69,16 +69,16 @@ public class MarcadorCtrl implements Serializable {
 			usuario=usuarioServicio.buscarUsuarioPorLogin(objSesion.getCedula());
 
 		
-		listaPartido = new ArrayList<>();
-		cargarPartidosIngreso();
-		
-		listaParticipantes = new ArrayList<>();
-		cargarTablaPosiciones();
-		
-		listaPronostico = new ArrayList<>();
-		cargarPronosticos();
+			listaPartido = new ArrayList<>();
+			cargarPartidosIngreso();
 			
-		partidoSeleccionado = new Pronostico();
+			listaParticipantes = new ArrayList<>();
+			cargarTablaPosiciones();
+			
+			listaPronostico = new ArrayList<>();
+			cargarPronosticos();
+				
+			partidoSeleccionado = new Pronostico();
 		}else {
 			cerrarSesion();
 		}

@@ -44,7 +44,7 @@ public class UsuarioDaoImpl extends GenericDaoEjb<Usuario, Integer> implements U
 
 			String[] criteriasAnd = { "login", "contrasena" };
 			CriteriaTypeEnum[] typesAnd = { CriteriaTypeEnum.STRING_EQUALS, CriteriaTypeEnum.STRING_EQUALS, CriteriaTypeEnum.STRING_EQUALS };
-			Object[] valuesCriteriaAnd = { cedula, contrasenaEnccriptada, "A" };
+			Object[] valuesCriteriaAnd = { cedula, contrasenaEnccriptada, 'A' };
 
 			Criteria criteria = new Criteria(criteriasAnd, typesAnd, valuesCriteriaAnd);
 			return findByCriterias(criteria).get(0);
@@ -59,7 +59,7 @@ public class UsuarioDaoImpl extends GenericDaoEjb<Usuario, Integer> implements U
 		try {
 			String[] criteriasAnd = { "login", "estado" };
 			CriteriaTypeEnum[] typesAnd = { CriteriaTypeEnum.STRING_EQUALS, CriteriaTypeEnum.STRING_EQUALS };
-			Object[] valuesCriteriaAnd = { username, "A" };
+			Object[] valuesCriteriaAnd = { username, 'A' };
 			
 			Criteria criteria = new Criteria(criteriasAnd, typesAnd, valuesCriteriaAnd);
 			return findByCriterias(criteria).get(0);
