@@ -2,6 +2,7 @@ package ec.com.pronosticodeportivo.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -11,6 +12,7 @@ import ec.com.pronosticodeportivo.modelo.Pronostico;
 import ec.com.pronosticodeportivo.modelo.Usuario;
 import ec.com.pronosticodeportivo.modelo.VwPartidosPronosticosUsuario;
 import ec.com.pronosticodeportivo.modelo.VwTablaPosiciones;
+import ec.com.pronosticodeportivo.servicios.EtapaServicio;
 import ec.com.pronosticodeportivo.servicios.PartidoServicio;
 import ec.com.pronosticodeportivo.servicios.PronosticoServicio;
 import ec.com.pronosticodeportivo.servicios.UsuarioServicio;
@@ -50,6 +52,9 @@ public class MarcadorCtrl implements Serializable {
 
 	@EJB
 	private VwPartidosPronosticosUsuarioServicio vwPronosticoServicio;
+	
+	@EJB
+	private EtapaServicio etapaServicio;
 
 	private static final long serialVersionUID = 7058602135192992714L;
 	private List<VwTablaPosiciones> listaParticipantes;
@@ -62,12 +67,16 @@ public class MarcadorCtrl implements Serializable {
 
 	private Usuario usuario;
 	
+	private BigDecimal pozo;
+	
 	@PostConstruct
 	public void init() {
 		
 		if (objSesion.getCedula() != null && objSesion.getNombre() != null) {
 			usuario=usuarioServicio.buscarUsuarioPorLogin(objSesion.getCedula());
-
+			Integer cantidad = usuarioServicio.cantidadParticipantes();
+			pozo = etapaServicio.getInscripcion();
+			pozo = pozo.multiply(BigDecimal.valueOf(cantidad));
 		
 			listaPartido = new ArrayList<>();
 			cargarPartidosIngreso();
@@ -186,6 +195,14 @@ public class MarcadorCtrl implements Serializable {
 		
 		return res;
 				//listaPronostico.stream().mapToInt(VwPartidosPronosticosUsuario::getPuntaje).sum();
+	}
+
+	public BigDecimal getPozo() {
+		return pozo;
+	}
+
+	public void setPozo(BigDecimal pozo) {
+		this.pozo = pozo;
 	}
 
 

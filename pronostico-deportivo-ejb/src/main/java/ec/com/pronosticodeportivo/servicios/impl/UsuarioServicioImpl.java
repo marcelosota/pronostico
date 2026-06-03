@@ -7,13 +7,14 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import ec.com.persistencia.constante.CriteriaTypeEnum;
 import ec.com.persistencia.dao.GenericDao;
 import ec.com.persistencia.servicio.impl.GenericServiceImpl;
+import ec.com.persistencia.util.Criteria;
 import ec.com.pronosticodeportivo.dao.UsuarioDao;
 import ec.com.pronosticodeportivo.modelo.Usuario;
 import ec.com.pronosticodeportivo.servicios.UsuarioServicio;
@@ -75,14 +76,14 @@ public class UsuarioServicioImpl extends GenericServiceImpl<Usuario, Integer> im
 			String nuevaClave=generarContrasena();
 			cambioClave.setContrasena(encriptarContrasena(nuevaClave));
 		
-			String asunto = "Recuperación contraseña";
+			/*String asunto = "Recuperación contraseña";
 			StringBuilder textoMensaje = new StringBuilder("hola ").append(cambioClave.getNombre()) 
 				.append("Se ha generado automáticamente un nueva contraseña. Los nuevos datos de acceso son:<br/>")
 				.append("<b>Usuario: </b>").append(usuarioRecuperar)
 				.append("<br/><b>Contraseña: </b>").append(nuevaClave);
 		
 			List<String> to=new ArrayList<String>();
-			to.add(cambioClave.getEmail());
+			to.add(cambioClave.getEmail());*/
 
 		/*Mensaje mensaje=new Mensaje();
 		mensaje.setAsunto(asunto);
@@ -97,8 +98,21 @@ public class UsuarioServicioImpl extends GenericServiceImpl<Usuario, Integer> im
 		
 	}
 	
+	@Override
 	public String generarContrasena(){
 		return RandomStringUtils.randomAlphanumeric(6);
+	}
+	
+	@Override
+	public Integer cantidadParticipantes() {
+		String[] criteriasAnd = { "estado" };
+		CriteriaTypeEnum[] typesAnd = { CriteriaTypeEnum.STRING_EQUALS };
+		Object[] valuesCriteriaAnd = {  'A' };
+
+		Criteria criteria = new Criteria(criteriasAnd, typesAnd, valuesCriteriaAnd);
+		List<Usuario> participantes = findByCriterias(criteria);
+		return participantes.size();
+		
 	}
 
 }

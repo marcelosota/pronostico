@@ -42,9 +42,10 @@
 							rowKey="#{usu.usuarioId}"
 							selection="#{registrarParticipanteCtrl.usuarioSeleccionado}"
 							rowSelectMode="add"
-							rows="8"
+							rows="10"
 							paginator="true"
 							paginatorPosition="both"
+							rowsPerPageTemplate="5, 10, 15"
 							globalFilterOnly="#{registrarParticipanteCtrl.filtroGlobal}"
 							filteredValue="#{registrarParticipanteCtrl.filtrarUsuario}">
 							<f:facet name="header">

@@ -108,7 +108,10 @@
 						paginatorPosition="bottom"
 						rowsPerPageTemplate="5,10,20">
 						<f:facet name="header">
-							<h:outputText value="Tabla de posiciones" />
+							<h:outputText value="Tabla de posiciones - Pozo - " />
+							<h:outputText value="#{marcadorCtrl.pozo}" style="color: #B51A1A">
+							    <f:convertNumber type="currency" currencySymbol="USD" minFractionDigits="2" maxFractionDigits="2" />
+							</h:outputText>
 						</f:facet>
 						<p:column headerText="Posición">
 							<h:outputText value="#{participante.posicionId}" />
@@ -138,6 +141,9 @@
 					paginatorPosition="bottom"
 					rows="10"
 					rowsPerPageTemplate="5,10,20">
+					<f:facet name="header">
+						<h:outputText value="Mis Pronósticos" />
+					</f:facet>
 					<p:column headerText="Partido" 
 						style="background-color: #BEA772;">
 						<span class="fi fi-#{pronostico.banderaLocal}"

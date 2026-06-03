@@ -23,4 +23,6 @@ public interface UsuarioServicio extends GenericService<Usuario, Integer> {
 	public void recuperarContrasena(String usuarioRecuperar);
 	
 	public String generarContrasena();
+	
+	public Integer cantidadParticipantes();
 }
