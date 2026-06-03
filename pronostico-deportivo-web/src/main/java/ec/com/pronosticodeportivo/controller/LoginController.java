@@ -105,12 +105,11 @@ public class LoginController implements Serializable{
 	public String login() {
 		System.out.println(getPassword());
 		usuario = usuarioServicio.autenticarUsuario(getUsername(), getPassword());
-		if (usuario != null) {
+		if (usuario != null && "A".equals(usuario.getEstado())) {
 			crearSesionUsuario();
 			return "success";
 		} else {
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
-					"Datos de Usuario y/o contraseña incorrectos.");
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Datos de Usuario y/o contraseña incorrectos.");
 			FacesContext.getCurrentInstance().addMessage("login:mensajeAlerta", msg);
 			return "index";
 		}
@@ -137,11 +136,11 @@ public class LoginController implements Serializable{
 			List<String> to=new ArrayList<String>();
 			to.add(cambioClave.getEmail());
 			CorreoElectronico.enviarConGMail(cambioClave.getEmail(), asunto, textoMensaje.toString());
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
-					"Se ha enviado una nueva contraseña a su correo electrónico.");
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "",	"Se ha enviado una nueva contraseña a su correo electrónico.");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}else {
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
-				"No se ha encontrado un usuario con los parámetros de búsqueda proporcionados.");
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "", "No se ha encontrado un usuario con los parámetros de búsqueda proporcionados");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	}
 	

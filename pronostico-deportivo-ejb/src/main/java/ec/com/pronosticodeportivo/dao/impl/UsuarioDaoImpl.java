@@ -43,8 +43,8 @@ public class UsuarioDaoImpl extends GenericDaoEjb<Usuario, Integer> implements U
 			contrasenaEnccriptada = new BigInteger(1, crypt.digest()).toString(16);
 
 			String[] criteriasAnd = { "login", "contrasena" };
-			CriteriaTypeEnum[] typesAnd = { CriteriaTypeEnum.STRING_EQUALS, CriteriaTypeEnum.STRING_EQUALS };
-			Object[] valuesCriteriaAnd = { cedula, contrasenaEnccriptada };
+			CriteriaTypeEnum[] typesAnd = { CriteriaTypeEnum.STRING_EQUALS, CriteriaTypeEnum.STRING_EQUALS, CriteriaTypeEnum.STRING_EQUALS };
+			Object[] valuesCriteriaAnd = { cedula, contrasenaEnccriptada, "A" };
 
 			Criteria criteria = new Criteria(criteriasAnd, typesAnd, valuesCriteriaAnd);
 			return findByCriterias(criteria).get(0);
@@ -57,9 +57,9 @@ public class UsuarioDaoImpl extends GenericDaoEjb<Usuario, Integer> implements U
 	@Override
 	public Usuario obtenerUsuarioPorLogin(String username) {
 		try {
-			String[] criteriasAnd = { "login" };
-			CriteriaTypeEnum[] typesAnd = { CriteriaTypeEnum.STRING_EQUALS };
-			Object[] valuesCriteriaAnd = { username };
+			String[] criteriasAnd = { "login", "estado" };
+			CriteriaTypeEnum[] typesAnd = { CriteriaTypeEnum.STRING_EQUALS, CriteriaTypeEnum.STRING_EQUALS };
+			Object[] valuesCriteriaAnd = { username, "A" };
 			
 			Criteria criteria = new Criteria(criteriasAnd, typesAnd, valuesCriteriaAnd);
 			return findByCriterias(criteria).get(0);

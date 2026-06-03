@@ -98,9 +98,8 @@
 					icon="pi pi-check" 
 					update=":login:mensajeAlerta"
 					oncomplete="PF('dlgContrasena').hide()"
-					process="@this dlgRecuperar"
-					actionListener="#{loginController.recuperarContrasenaCedula}"
-					immediate="true">
+					process="@form"
+					actionListener="#{loginController.recuperarContrasenaCedula}">
 				</p:commandButton>				
 			</div>
 		</h:form>
