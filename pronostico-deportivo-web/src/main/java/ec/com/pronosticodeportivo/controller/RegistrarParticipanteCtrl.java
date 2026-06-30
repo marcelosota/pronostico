@@ -73,7 +73,7 @@ public class RegistrarParticipanteCtrl implements Serializable {
 		
 		if("A".equals(usuarioSeleccionado.getEstado())) {
 			asunto = "Usuario habilitado";
-			correo.append("Quienes conformamos pronostico deportivo te damos la mas cordial bienvenida a participar en este emocionante torneo, ").
+			correo.append("Quienes conformamos Pronóstico Deportivo te damos la más cordial bienvenida a participar en este emocionante torneo, ").
 			append("tu usuario se encuentra habilitado con los siguientes datos:<br/>").
 			append("<b>Usuario: </b> ").append(usuarioSeleccionado.getLogin()).append("<br/>").
 			append("<b>Correo electrónico: </b> ").append(usuarioSeleccionado.getEmail()).append("<br/><br/>").

@@ -112,8 +112,8 @@
 							<p:panelGrid columns="1" 
 								layout="grid" 
 								styleClass="showcase-text-align-center" 
-								columnClasses="ui-g-12 ui-md-6">
-								<p:outputLabel for="txtLogin" value="Número de identificación" />
+								>
+								<p:outputLabel for="txtLogin" value="Identificación" />
 								<p:inputText id="txtLogin" 
 									value="#{registrarParticipanteCtrl.usuarioSeleccionado.login}" 
 									required="true" 
@@ -152,13 +152,13 @@
 								<p:outputLabel for="txtEstado" value="Estado" />
 								<p:selectOneMenu id="txtEstado" 
 									value="#{registrarParticipanteCtrl.usuarioSeleccionado.estado}" 
-									required="true"
-									style="width: 30;">
+									required="true">
+									<!-- style="width: 30;">-->
 									<f:selectItem itemLabel="Activo" itemValue="A"/>
 									<f:selectItem itemLabel="Inactivo" itemValue="I"/>
 								</p:selectOneMenu>
 									
-							</p:panelGrid>					
+							</p:panelGrid>				
 						</p:panel>
 					</p:outputPanel>
 					<f:facet name="footer">

@@ -110,8 +110,9 @@
 						<f:facet name="header">
 							<h:outputText value="Tabla de posiciones - Pozo - " />
 							<h:outputText value="#{marcadorCtrl.pozo}" style="color: #B51A1A">
-							    <f:convertNumber type="currency" currencySymbol="USD" minFractionDigits="2" maxFractionDigits="2" />
-							</h:outputText>
+							    <f:convertNumber type="currency" currencySymbol=" USD " minFractionDigits="2" maxFractionDigits="2" />
+							</h:outputText><br/>
+							<h:outputText value="Actualmente estás en el puesto Nro. #{marcadorCtrl.posicion}" style="color: darkGreen; font-weight: bold;" />
 						</f:facet>
 						<p:column headerText="Posición">
 							<h:outputText value="#{participante.posicionId}" />
@@ -195,7 +196,7 @@
 						<h:outputText value="#{pronostico.puntaje}" />
 					</p:column>
 					<f:facet name="footer">
-						<h:outputText value="Total: #{marcadorCtrl.totalPuntos}" />
+						<h:outputText value="Total: #{marcadorCtrl.totalPuntos}" style="font-weight: bold;"/>
 					</f:facet>
 				</p:dataTable>
 				<!--/b:column>
@@ -239,7 +240,8 @@
 								size="1" 
 								maxlength="2"
 								rendered="#{marcadorCtrl.partidoSeleccionado.partido.etapa.penales}"
-								disabled="#{marcadorCtrl.partidoSeleccionado.local != null and  marcadorCtrl.partidoSeleccionado.visitante != null and marcadorCtrl.partidoSeleccionado.local eq marcadorCtrl.partidoSeleccionado.visitante ? false : true}" />
+								disabled="#{marcadorCtrl.partidoSeleccionado.local != null and  marcadorCtrl.partidoSeleccionado.visitante != null and marcadorCtrl.partidoSeleccionado.local eq marcadorCtrl.partidoSeleccionado.visitante ? false : true}">
+							</p:inputText>
 							<h:panelGroup>
 								<span
 									class="fi fi-#{marcadorCtrl.partidoSeleccionado.partido.equipo2.bandera}"
@@ -258,7 +260,8 @@
 								size="1" 
 								maxlength="2"
 								rendered="#{marcadorCtrl.partidoSeleccionado.partido.etapa.penales}"
-								disabled="#{marcadorCtrl.partidoSeleccionado.local != null and  marcadorCtrl.partidoSeleccionado.visitante != null and marcadorCtrl.partidoSeleccionado.local eq marcadorCtrl.partidoSeleccionado.visitante ? false : true}" />
+								disabled="#{marcadorCtrl.partidoSeleccionado.local != null and  marcadorCtrl.partidoSeleccionado.visitante != null and marcadorCtrl.partidoSeleccionado.local eq marcadorCtrl.partidoSeleccionado.visitante ? false : true}">
+							</p:inputText>
 						</p:panelGrid>
 					</p:panel>
 				</p:outputPanel>
@@ -266,7 +269,7 @@
 					<p:commandButton value="Guardar" 
 						icon="pi pi-check"
 						actionListener="#{marcadorCtrl.guardarPronostico}"
-						update="pnlPartido formMarcador" 
+						update="msgMensajes pnlPartido formMarcador" 
 						process="pnlPartido @this"
 						oncomplete="PF('editarPartidoDialog').hide()" />
 					<p:commandButton value="Cancelar" 

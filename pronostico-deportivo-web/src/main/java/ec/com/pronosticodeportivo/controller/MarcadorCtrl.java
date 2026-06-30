@@ -22,6 +22,7 @@ import ec.com.pronosticodeportivo.servicios.VwTablaPosicionesServicio;
 import ec.com.pronosticodeportivo.session.Sesion;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -68,6 +69,7 @@ public class MarcadorCtrl implements Serializable {
 	private Usuario usuario;
 	
 	private BigDecimal pozo;
+	private Long posicion;
 	
 	@PostConstruct
 	public void init() {
@@ -101,6 +103,12 @@ public class MarcadorCtrl implements Serializable {
 
 	private void cargarTablaPosiciones() {
 		listaParticipantes = vwTablaPosicionesServicio.findAll();
+		posicion = listaParticipantes.stream()
+			    .filter(obj -> objSesion.getCedula().equals(obj.getLogin()))
+			    .map(obj ->obj.getPosicionId())
+			    .findFirst()
+			    .orElse(null);
+		System.out.println("posicion: "+getPosicion());
 	}
 
 	private void cargarPartidosIngreso() {
@@ -141,11 +149,23 @@ public class MarcadorCtrl implements Serializable {
 	public void guardarPronostico() {
 		partidoSeleccionado.setFechaRegistro(Calendar.getInstance().getTime());
 		partidoSeleccionado.setPuntaje(Short.valueOf("0"));
+		if(partidoSeleccionado.getLocal() == null || partidoSeleccionado.getVisitante() == null) {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "",	"El marcador ingresado no es válido.");
+			FacesContext.getCurrentInstance().addMessage("msgMensaje", msg);
+			partidoSeleccionado = null;
+			return;
+		}
+		if(partidoSeleccionado.getPartido().getEtapa().getPenales() && partidoSeleccionado.getLocal() != partidoSeleccionado.getVisitante()) {
+			partidoSeleccionado.setPenalesLocal(null);
+			partidoSeleccionado.setPenalesVisitante(null);
+		}
+		
 		pronosticoServicio.update(partidoSeleccionado);
 		cargarPartidosIngreso();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "",	"Su marcador se ha guardado correctamente.");
+		FacesContext.getCurrentInstance().addMessage("msgMensaje", msg);
 		System.out.println("Partido guardado");
 		partidoSeleccionado = null;
-		
 		
 	}
 
@@ -203,6 +223,14 @@ public class MarcadorCtrl implements Serializable {
 
 	public void setPozo(BigDecimal pozo) {
 		this.pozo = pozo;
+	}
+
+	public Long getPosicion() {
+		return posicion;
+	}
+
+	public void setPosicion(Long posicion) {
+		this.posicion = posicion;
 	}
 
 
